@@ -6,7 +6,7 @@
 
 Install:
 ```bash
-npm install vue-js-drodown --save
+npm install vue-js-dropdown --save
 ```
 Import:
 ```javascript
