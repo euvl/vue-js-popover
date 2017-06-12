@@ -229,8 +229,8 @@ exports.default = {
       var shiftX = dropdownRect.width - targetRect.width;
       var shiftY = 0.5 * (dropdownRect.height + targetRect.height);
 
-      var centerX = targetRect.left - 0.5 * (dropdownRect.width - targetRect.width);
-      var centerY = targetRect.bottom - shiftY;
+      var centerX = targetRect.left - 0.5 * (dropdownRect.width - targetRect.width) + window.scrollX;
+      var centerY = targetRect.bottom - shiftY + window.scrollY;
 
       var positionX = 0.5 * direction[0] * (dropdownRect.width + targetRect.width);
       var positionY = direction[1] * shiftY;

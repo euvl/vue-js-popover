@@ -108,8 +108,8 @@ export default {
       let shiftX = dropdownRect.width - targetRect.width
       let shiftY = 0.5 * (dropdownRect.height + targetRect.height)
 
-      let centerX = targetRect.left - 0.5 * (dropdownRect.width - targetRect.width)
-      let centerY = targetRect.bottom - shiftY
+      let centerX = targetRect.left - 0.5 * (dropdownRect.width - targetRect.width) + window.scrollX
+      let centerY = targetRect.bottom - shiftY + window.scrollY
 
       let positionX = 0.5 * direction[0] * (dropdownRect.width + targetRect.width)
       let positionY = direction[1] * shiftY
