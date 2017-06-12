@@ -2,11 +2,11 @@
 
 [![npm version](https://badge.fury.io/js/vue-js-dropdown.svg)](https://badge.fury.io/js/vue-js-dropdown)
 
-[Live demo here](http://vue-js-drodown.yev.io/)
-
-<center>
+<p align="center">
   <img src="https://media.giphy.com/media/3ohzdLUN7wlswXpFwQ/giphy.gif">
-</center>
+</p>
+
+[Live demo here](http://vue-js-dropdown.yev.io/)
 
 Install:
 ```bash
