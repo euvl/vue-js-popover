@@ -23,3 +23,13 @@ Use:
   Hello 🎉
 </dropdown>
 ```
+
+### Positioning
+
+You can use `.left`, `.right`, `.top`, `.bottom` modifiers to set the position of the dropdown.
+
+Example:
+
+```vue
+<button v-dropdown:foo.left>Toggle dropdown (left)</button>
+```
