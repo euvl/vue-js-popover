@@ -90,6 +90,8 @@ $buttonHeight: 40px;
   color: #2c3e50;
   padding-top: 100px;
 
+  overflow: scroll;
+
   max-width: 500px;
   margin: 0 auto;
 }
