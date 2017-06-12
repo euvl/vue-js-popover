@@ -4,6 +4,10 @@
 
 [Live demo here](http://vue-js-drodown.yev.io/)
 
+<center>
+  <img src="https://media.giphy.com/media/3ohzdLUN7wlswXpFwQ/giphy.gif">
+</center>
+
 Install:
 ```bash
 npm install vue-js-dropdown --save
