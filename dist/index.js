@@ -452,7 +452,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": function($event) {
         $event.stopPropagation();
-        $event.preventDefault();
       }
     }
   }, [_vm._t("default")], 2) : _vm._e()

@@ -15,7 +15,7 @@
 
       <transition name="show-from-left">
         <dropdown name="aaa" :width="120">
-          🎉 Hi 🎉
+          <a href="http://yev.io">🎉 Hi 🎉</a>
         </dropdown>
       </transition>
 
@@ -90,7 +90,7 @@ $buttonHeight: 40px;
   color: #2c3e50;
   padding-top: 100px;
 
-  overflow: scroll;
+  overflow: none;
 
   max-width: 500px;
   margin: 0 auto;

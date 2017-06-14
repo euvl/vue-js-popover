@@ -3,7 +3,7 @@
        :class="className"
        :style="style"
        ref="dropdown"
-       @click.stop.prevent>
+       @click.stop>
     <slot/>
   </div>
 </template>
