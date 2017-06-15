@@ -142,7 +142,7 @@ var directions = {
 };
 
 exports.default = {
-  name: 'Dropdown',
+  name: 'Popover',
   props: {
     name: {
       type: String,
@@ -174,7 +174,7 @@ exports.default = {
 
   computed: {
     className: function className() {
-      return ['vue-dropdown', this.pointer && this.positionClass];
+      return ['vue-popover', this.pointer && this.positionClass];
     },
     style: function style() {
       return _extends({
@@ -278,18 +278,13 @@ var defaultPosition = 'bottom';
 
 exports.default = {
   install: function install(Vue) {
-    Vue.component('Dropdown', _Component2.default);
-
-    Vue.prototype.$dropdown = {
-      show: function show() {},
-      hide: function hide() {}
-    };
+    Vue.component('Popover', _Component2.default);
 
     document.addEventListener('resize', function (event) {
       _bus.events.$emit('hide', { srcEvent: event });
     });
 
-    Vue.directive('dropdown', {
+    Vue.directive('popover', {
       inserted: function inserted(target, binding, vnode) {
         var name = binding.arg;
         var modifiers = Object.keys(binding.modifiers || {});
@@ -322,7 +317,7 @@ exports = module.exports = __webpack_require__(5)();
 
 
 // module
-exports.push([module.i, ".vue-dropdown{display:block;position:absolute;background:#fff;box-shadow:0 4px 20px 0 rgba(52,73,94,.2);padding:5px;border-radius:5px;z-index:998}.vue-dropdown:before{display:block;position:absolute;width:0;height:0;content:\"\"}.vue-dropdown.dropdown-position-bottom:before{border-bottom:10px solid #fff;top:-10px;filter:drop-shadow(0 -2px 2px rgba(52,73,94,.1))}.vue-dropdown.dropdown-position-bottom:before,.vue-dropdown.dropdown-position-top:before{border-left:10px solid transparent;border-right:10px solid transparent;left:calc(50% - 10px)}.vue-dropdown.dropdown-position-top:before{border-top:10px solid #fff;bottom:-10px;filter:drop-shadow(0 2px 2px rgba(52,73,94,.1))}.vue-dropdown.dropdown-position-left:before{border-left:10px solid #fff;right:-10px;filter:drop-shadow(2px 0 2px rgba(52,73,94,.1))}.vue-dropdown.dropdown-position-left:before,.vue-dropdown.dropdown-position-right:before{border-top:10px solid transparent;border-bottom:10px solid transparent;top:calc(50% - 10px)}.vue-dropdown.dropdown-position-right:before{border-right:10px solid #fff;left:-10px;filter:drop-shadow(-2px 0 2px rgba(52,73,94,.1))}", ""]);
+exports.push([module.i, ".vue-popover{display:block;position:absolute;background:#fff;box-shadow:0 4px 20px 0 rgba(52,73,94,.2);padding:5px;border-radius:5px;z-index:998}.vue-popover:before{display:block;position:absolute;width:0;height:0;content:\"\"}.vue-popover.dropdown-position-bottom:before{border-bottom:10px solid #fff;top:-10px;filter:drop-shadow(0 -2px 2px rgba(52,73,94,.1))}.vue-popover.dropdown-position-bottom:before,.vue-popover.dropdown-position-top:before{border-left:10px solid transparent;border-right:10px solid transparent;left:calc(50% - 10px)}.vue-popover.dropdown-position-top:before{border-top:10px solid #fff;bottom:-10px;filter:drop-shadow(0 2px 2px rgba(52,73,94,.1))}.vue-popover.dropdown-position-left:before{border-left:10px solid #fff;right:-10px;filter:drop-shadow(2px 0 2px rgba(52,73,94,.1))}.vue-popover.dropdown-position-left:before,.vue-popover.dropdown-position-right:before{border-top:10px solid transparent;border-bottom:10px solid transparent;top:calc(50% - 10px)}.vue-popover.dropdown-position-right:before{border-right:10px solid #fff;left:-10px;filter:drop-shadow(-2px 0 2px rgba(52,73,94,.1))}", ""]);
 
 // exports
 
