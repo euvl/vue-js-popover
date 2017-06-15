@@ -12,7 +12,7 @@
 
 Install:
 ```bash
-npm install vue-js-dropdown --save
+npm install vue-js-popover --save
 ```
 Import:
 ```javascript
