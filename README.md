@@ -5,7 +5,7 @@
 [![npm version](https://badge.fury.io/js/vue-js-popover.svg)](https://badge.fury.io/js/vue-js-popover)
 
 <p align="center">
-  <img src="https://media.giphy.com/media/3ohzdLUN7wlswXpFwQ/giphy.gif">
+  <img src="https://media.giphy.com/media/xUA7beKmTnr9fkbI6k/giphy.gif">
 </p>
 
 [Live demo here](http://vue-js-dropdown.yev.io/)
