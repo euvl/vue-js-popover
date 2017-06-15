@@ -1,6 +1,6 @@
 {
-  "name": "vue-js-dropdown",
-  "description": "Vue.js 2+ dropdown plugin",
+  "name": "vue-js-popover",
+  "description": "Vue.js 2+ popover component",
   "version": "1.0.2",
   "author": "euvl <yev.vlasenko@gmail.com>",
   "private": false,
@@ -10,10 +10,10 @@
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/euvl/vue-js-dropdown.git"
+    "url": "https://github.com/euvl/vue-js-popover.git"
   },
   "bugs": {
-    "url": "https://github.com/euvl/vue-js-dropdown/issues"
+    "url": "https://github.com/euvl/vue-js-popover/issues"
   },
   "peerDependencies": {
     "vue": "^2.0.0"
@@ -21,6 +21,8 @@
   "keywords": [
     "vue",
     "dropdown",
+    "tooltip",
+    "popover",
     "menu",
     "button"
   ],

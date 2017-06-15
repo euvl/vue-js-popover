@@ -1,6 +1,6 @@
-### Vue.js 2.0+ dropdown
+### Vue.js 2.0+ popover
 
-[![npm version](https://badge.fury.io/js/vue-js-dropdown.svg)](https://badge.fury.io/js/vue-js-dropdown)
+[![npm version](https://badge.fury.io/js/vue-js-popover.svg)](https://badge.fury.io/js/vue-js-popover)
 
 <p align="center">
   <img src="https://media.giphy.com/media/3ohzdLUN7wlswXpFwQ/giphy.gif">
@@ -15,25 +15,25 @@ npm install vue-js-dropdown --save
 Import:
 ```javascript
 import Vue      from 'vue'
-import Dropdown from 'vue-js-dropdown'
+import Popover  from 'vue-js-popover'
 
-Vue.use(Dropdown)
+Vue.use(Popover)
 ```
 Use:
 ```vue
-<button v-dropdown:foo>Toggle dropdown</button>
+<button v-popover:foo>Toggle popover</button>
 
-<dropdown name="foo">
+<popover name="foo">
   Hello 🎉
-</dropdown>
+</popover>
 ```
 
 ### Positioning
 
-You can use `.left`, `.right`, `.top`, `.bottom` modifiers to set the position of the dropdown.
+You can use `.left`, `.right`, `.top`, `.bottom` modifiers to set the position of the popover.
 
 Example:
 
 ```vue
-<button v-dropdown:foo.left>Toggle dropdown (left)</button>
+<button v-popover:foo.left>Toggle popover (left)</button>
 ```

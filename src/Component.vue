@@ -13,14 +13,14 @@ import { events } from './bus'
 
 const pointerSize = 10
 const directions = {
-  left: [-1, 0],
-  right: [1, 0],
-  top: [0, 1],
+  left:   [-1, 0],
+  right:  [1, 0],
+  top:    [0, 1],
   bottom: [0, -1]
 }
 
 export default {
-  name: 'Dropdown',
+  name: 'Popover',
   props: {
     name: {
       type: String,
@@ -52,7 +52,7 @@ export default {
   computed: {
     className () {
       return [
-        'vue-dropdown',
+        'vue-popover',
         this.pointer && this.positionClass
       ]
     },
@@ -131,7 +131,7 @@ export default {
 <style lang="scss">
 $pointer-size: 10px;
 
-.vue-dropdown {
+.vue-popover {
   display: block;
   position: absolute;
   background: #fff;

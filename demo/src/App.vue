@@ -1,39 +1,39 @@
 <template>
   <div id="app">
     <div style="text-align: left;">
-      <h2>Vue.js Dropdown
-        <a href="https://github.com/euvl/vue-js-dropdown/blob/master/README.md" target="readme">Readme</a>
-        <a href="https://github.com/euvl/vue-js-dropdown/issues" target="issues">Issues</a>
+      <h2>Vue.js Popover
+        <a href="https://github.com/euvl/vue-js-popover/blob/master/README.md" target="readme">Readme</a>
+        <a href="https://github.com/euvl/vue-js-popover/issues" target="issues">Issues</a>
       </h2>
     </div>
 
     <div>
-      <button v-dropdown:aaa.left>Left</button>
-      <button v-dropdown:bbb.top>Top</button>
-      <button v-dropdown:ccc.bottom>Bottom</button>
-      <button v-dropdown:ddd.right>Right</button>
+      <button v-popover:aaa.left>Left</button>
+      <button v-popover:bbb.top>Top</button>
+      <button v-popover:ccc.bottom>Bottom</button>
+      <button v-popover:ddd.right>Right</button>
 
       <transition name="show-from-left">
-        <dropdown name="aaa" :width="120">
+        <popover name="aaa" :width="120">
           <a href="http://yev.io">🎉 Hi 🎉</a>
-        </dropdown>
+        </popover>
       </transition>
 
       <transition name="pop-out">
-        <dropdown name="bbb">
+        <popover name="bbb">
           How are you? 🚀
-        </dropdown>
+        </popover>
       </transition>
 
-      <dropdown name="ccc" @show="showFour">
+      <popover name="ccc" @show="showFour">
         <div>Hm... 🤔</div>
         <div>Opened at <i>{{openedTime}}</i></div>
-      </dropdown>
+      </popover>
 
       <transition name="show-from-right">
-        <dropdown name="ddd" :width="120">
+        <popover name="ddd" :width="120">
           Whats up? 🐸
-        </dropdown>
+        </popover>
       </transition>
     </div>
 
@@ -50,22 +50,22 @@ export default {
       openedTime: '',
       example: {
         html:
-`npm install vue-js-dropdown --save
+`npm install vue-js-popover --save
 
 ...
 
 import Vue      from 'vue'
-import Dropdown from 'vue-js-dropdown'
+import Popover from 'vue-js-popover'
 
-Vue.use(Dropdown)
+Vue.use(Popover)
 
 ...
 
-<button v-dropdown:myname>Toggle dropdown</button>
+<button v-popover:myname>Toggle popover</button>
 
-<dropdown name="myname">
+<popover name="myname">
   Hello!
-</dropdown>
+</popover>
 `
       }
     }
