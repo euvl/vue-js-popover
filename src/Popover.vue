@@ -2,6 +2,7 @@
   <div v-if="visible"
        :class="className"
        :style="style"
+       :data-popover="name"
        ref="dropdown"
        @click.stop>
     <slot/>
@@ -33,6 +34,10 @@ export default {
     pointer: {
       type: Boolean,
       default: true
+    },
+    event: {
+      type: String,
+      default: 'click'
     }
   },
   data () {
@@ -40,16 +45,22 @@ export default {
       visible: false,
       positionClass: '',
       position: {
-        left: '0px',
-        top: '0px'
+        left: 0,
+        top: 0
       }
     }
   },
   mounted () {
-    events.$on('show', this.onShow)
-    events.$on('hide', this.onHide)
+    events.$on(this.showEventName, this.showEventListener)
+    events.$on(this.hideEventName, this.hideEventListener)
   },
   computed: {
+    showEventName () {
+      return `show:${this.event}`
+    },
+    hideEventName () {
+      return `hide:${this.event}`
+    },
     className () {
       return [
         'vue-popover',
@@ -58,15 +69,15 @@ export default {
     },
     style () {
       return {
-        width: this.width + 'px',
+        width: `${this.width}px`,
         ...this.position
       }
     }
   },
   methods: {
-    onShow (event) {
+    showEventListener (event) {
       if (this.visible) {
-        events.$emit('hide')
+        events.$emit(this.hideEventName)
         return
       }
 
@@ -76,7 +87,7 @@ export default {
         if (name === this.name) {
           let direction = directions[position]
 
-          this.positionClass = 'dropdown-position-' + position
+          this.positionClass = `dropdown-position-${position}`
           this.visible = true
 
           this.$nextTick(() => {
@@ -84,8 +95,8 @@ export default {
               .getDrodownPosition(target, this.$refs.dropdown, direction)
 
             this.position = {
-              left: position.left + 'px',
-              top: position.top + 'px'
+              left: `${position.left}px`,
+              top: `${position.top}px`
             }
 
             this.$emit('show', { ...event, position })
@@ -94,7 +105,7 @@ export default {
       })
     },
 
-    onHide (event) {
+    hideEventListener (event) {
       if (this.visible) {
         this.visible = false
         this.$emit('hide', event)
@@ -102,16 +113,16 @@ export default {
     },
 
     getDrodownPosition (target, dropdown, direction) {
-      let targetRect = target.getBoundingClientRect()
-      let dropdownRect = dropdown.getBoundingClientRect()
+      let trRect = target.getBoundingClientRect()
+      let ddRect = dropdown.getBoundingClientRect()
 
-      let shiftX = dropdownRect.width - targetRect.width
-      let shiftY = 0.5 * (dropdownRect.height + targetRect.height)
+      let shiftX = ddRect.width - trRect.width
+      let shiftY = 0.5 * (ddRect.height + trRect.height)
 
-      let centerX = targetRect.left - 0.5 * (dropdownRect.width - targetRect.width) + window.scrollX
-      let centerY = targetRect.bottom - shiftY + window.scrollY
+      let centerX = trRect.left - 0.5 * (ddRect.width - trRect.width) + window.scrollX
+      let centerY = trRect.bottom - shiftY + window.scrollY
 
-      let positionX = 0.5 * direction[0] * (dropdownRect.width + targetRect.width)
+      let positionX = 0.5 * direction[0] * (ddRect.width + trRect.width)
       let positionY = direction[1] * shiftY
 
       if (this.pointer) {
