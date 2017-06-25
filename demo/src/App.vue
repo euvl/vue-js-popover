@@ -13,6 +13,12 @@
       <button v-popover:ccc.bottom>Bottom</button>
       <button v-popover:ddd.right>Right</button>
 
+      <div>
+        <button v-popover:tooltip="'This is just an example of a tooltip wrapper and you can put your i18n value here.'">
+          Tooltip
+        </button>
+      </div>
+
       <transition name="show-from-left">
         <popover name="aaa" :width="120">
           <a href="http://yev.io">🎉 Hi 🎉</a>
@@ -37,8 +43,8 @@
       </transition>
     </div>
 
-    <pre class="xml" v-text="example.html">
-    </pre>
+    <pre class="xml" v-text="example.html"/>
+    <tooltip/>
   </div>
 </template>
 
@@ -177,4 +183,14 @@ button {
   opacity: 0;
   transform: rotate(720deg) translate(0, 120px);
 }
+
+div[data-popover="tooltip"] {
+  background: #444;
+  color: #f9f9f9;
+
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 5px;
+}
+
 </style>
