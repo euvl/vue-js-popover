@@ -1,7 +1,5 @@
 ### Vue.js 2.0+ popover
 
-#### Renames from `vue-js-popover` as a number of people said that the name is misleading.
-
 [![npm version](https://badge.fury.io/js/vue-js-popover.svg)](https://badge.fury.io/js/vue-js-popover)
 
 <p align="center">
