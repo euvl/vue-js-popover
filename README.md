@@ -80,7 +80,7 @@ Example:
 
 ### Styling
 
-Popover components has `data-popover="name"` argument that allows to apply styles to it. 
+Popover components have `data-popover="name"` argument that allows to apply styles to it. 
 
 Example:
 
