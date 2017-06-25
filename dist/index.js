@@ -7,7 +7,7 @@
 		exports["VueJsToggleButton"] = factory(require("vue"));
 	else
 		root["VueJsToggleButton"] = factory(root["vue"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_11__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_14__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -88,7 +88,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.events = undefined;
 
-var _vue = __webpack_require__(11);
+var _vue = __webpack_require__(14);
 
 var _vue2 = _interopRequireDefault(_vue);
 
@@ -98,288 +98,6 @@ var events = exports.events = new _vue2.default();
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-/* styles */
-__webpack_require__(8)
-
-var Component = __webpack_require__(6)(
-  /* script */
-  __webpack_require__(2),
-  /* template */
-  __webpack_require__(7),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _bus = __webpack_require__(0);
-
-var pointerSize = 10;
-var directions = {
-  left: [-1, 0],
-  right: [1, 0],
-  top: [0, 1],
-  bottom: [0, -1]
-};
-
-exports.default = {
-  name: 'Popover',
-  props: {
-    name: {
-      type: String,
-      required: true
-    },
-    width: {
-      type: Number,
-      default: 180
-    },
-    pointer: {
-      type: Boolean,
-      default: true
-    }
-  },
-  data: function data() {
-    return {
-      visible: false,
-      positionClass: '',
-      position: {
-        left: '0px',
-        top: '0px'
-      }
-    };
-  },
-  mounted: function mounted() {
-    _bus.events.$on('show', this.onShow);
-    _bus.events.$on('hide', this.onHide);
-  },
-
-  computed: {
-    className: function className() {
-      return ['vue-popover', this.pointer && this.positionClass];
-    },
-    style: function style() {
-      return _extends({
-        width: this.width + 'px'
-      }, this.position);
-    }
-  },
-  methods: {
-    onShow: function onShow(event) {
-      var _this = this;
-
-      if (this.visible) {
-        _bus.events.$emit('hide');
-        return;
-      }
-
-      this.$nextTick(function () {
-        var target = event.target,
-            name = event.name,
-            position = event.position;
-
-
-        if (name === _this.name) {
-          var direction = directions[position];
-
-          _this.positionClass = 'dropdown-position-' + position;
-          _this.visible = true;
-
-          _this.$nextTick(function () {
-            var position = _this.getDrodownPosition(target, _this.$refs.dropdown, direction);
-
-            _this.position = {
-              left: position.left + 'px',
-              top: position.top + 'px'
-            };
-
-            _this.$emit('show', _extends({}, event, { position: position }));
-          });
-        }
-      });
-    },
-    onHide: function onHide(event) {
-      if (this.visible) {
-        this.visible = false;
-        this.$emit('hide', event);
-      }
-    },
-    getDrodownPosition: function getDrodownPosition(target, dropdown, direction) {
-      var targetRect = target.getBoundingClientRect();
-      var dropdownRect = dropdown.getBoundingClientRect();
-
-      var shiftX = dropdownRect.width - targetRect.width;
-      var shiftY = 0.5 * (dropdownRect.height + targetRect.height);
-
-      var centerX = targetRect.left - 0.5 * (dropdownRect.width - targetRect.width) + window.scrollX;
-      var centerY = targetRect.bottom - shiftY + window.scrollY;
-
-      var positionX = 0.5 * direction[0] * (dropdownRect.width + targetRect.width);
-      var positionY = direction[1] * shiftY;
-
-      if (this.pointer) {
-        positionX += direction[0] * pointerSize;
-        positionY += direction[1] * pointerSize;
-      }
-
-      return {
-        left: centerX + positionX,
-        top: centerY - positionY
-      };
-    }
-  }
-};
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _Component = __webpack_require__(1);
-
-var _Component2 = _interopRequireDefault(_Component);
-
-var _bus = __webpack_require__(0);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var eventPairs = {
-  click: 'click',
-  mouneter: 'mouseleave'
-};
-
-var defaultPosition = 'bottom';
-
-exports.default = {
-  install: function install(Vue) {
-    Vue.component('Popover', _Component2.default);
-
-    document.addEventListener('resize', function (event) {
-      _bus.events.$emit('hide', { srcEvent: event });
-    });
-
-    Vue.directive('popover', {
-      inserted: function inserted(target, binding, vnode) {
-        var name = binding.arg;
-        var modifiers = Object.keys(binding.modifiers || {});
-        var position = modifiers[0] || defaultPosition;
-
-        target.addEventListener('click', function (srcEvent) {
-          var params = { name: name, target: target, position: position };
-
-          _bus.events.$emit('show', _extends({}, params, { srcEvent: srcEvent }));
-
-          var closeListener = function closeListener(srcEvent) {
-            _bus.events.$emit('hide', _extends({}, params, { srcEvent: srcEvent }));
-            document.removeEventListener('click', closeListener);
-          };
-
-          document.addEventListener('click', closeListener);
-          event.stopPropagation();
-        });
-      }
-    });
-  }
-};
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(5)();
-// imports
-
-
-// module
-exports.push([module.i, ".vue-popover{display:block;position:absolute;background:#fff;box-shadow:0 4px 20px 0 rgba(52,73,94,.2);padding:5px;border-radius:5px;z-index:998}.vue-popover:before{display:block;position:absolute;width:0;height:0;content:\"\"}.vue-popover.dropdown-position-bottom:before{border-bottom:10px solid #fff;top:-10px;filter:drop-shadow(0 -2px 2px rgba(52,73,94,.1))}.vue-popover.dropdown-position-bottom:before,.vue-popover.dropdown-position-top:before{border-left:10px solid transparent;border-right:10px solid transparent;left:calc(50% - 10px)}.vue-popover.dropdown-position-top:before{border-top:10px solid #fff;bottom:-10px;filter:drop-shadow(0 2px 2px rgba(52,73,94,.1))}.vue-popover.dropdown-position-left:before{border-left:10px solid #fff;right:-10px;filter:drop-shadow(2px 0 2px rgba(52,73,94,.1))}.vue-popover.dropdown-position-left:before,.vue-popover.dropdown-position-right:before{border-top:10px solid transparent;border-bottom:10px solid transparent;top:calc(50% - 10px)}.vue-popover.dropdown-position-right:before{border-right:10px solid #fff;left:-10px;filter:drop-shadow(-2px 0 2px rgba(52,73,94,.1))}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function() {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		var result = [];
-		for(var i = 0; i < this.length; i++) {
-			var item = this[i];
-			if(item[2]) {
-				result.push("@media " + item[2] + "{" + item[1] + "}");
-			} else {
-				result.push(item[1]);
-			}
-		}
-		return result.join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports) {
 
 // this module is a runtime utility for cleaner component module output and will
@@ -436,7 +154,380 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(11)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(4),
+  /* template */
+  __webpack_require__(9),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(5),
+  /* template */
+  __webpack_require__(10),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _bus = __webpack_require__(0);
+
+var pointerSize = 10;
+var directions = {
+  left: [-1, 0],
+  right: [1, 0],
+  top: [0, 1],
+  bottom: [0, -1]
+};
+
+exports.default = {
+  name: 'Popover',
+  props: {
+    name: {
+      type: String,
+      required: true
+    },
+    width: {
+      type: Number,
+      default: 180
+    },
+    pointer: {
+      type: Boolean,
+      default: true
+    },
+    event: {
+      type: String,
+      default: 'click'
+    }
+  },
+  data: function data() {
+    return {
+      visible: false,
+      positionClass: '',
+      position: {
+        left: 0,
+        top: 0
+      }
+    };
+  },
+  mounted: function mounted() {
+    _bus.events.$on(this.showEventName, this.showEventListener);
+    _bus.events.$on(this.hideEventName, this.hideEventListener);
+  },
+
+  computed: {
+    showEventName: function showEventName() {
+      return 'show:' + this.event;
+    },
+    hideEventName: function hideEventName() {
+      return 'hide:' + this.event;
+    },
+    className: function className() {
+      return ['vue-popover', this.pointer && this.positionClass];
+    },
+    style: function style() {
+      return _extends({
+        width: this.width + 'px'
+      }, this.position);
+    }
+  },
+  methods: {
+    showEventListener: function showEventListener(event) {
+      var _this = this;
+
+      if (this.visible) {
+        _bus.events.$emit(this.hideEventName);
+        return;
+      }
+
+      this.$nextTick(function () {
+        var target = event.target,
+            name = event.name,
+            position = event.position;
+
+
+        if (name === _this.name) {
+          var direction = directions[position];
+
+          _this.positionClass = 'dropdown-position-' + position;
+          _this.visible = true;
+
+          _this.$nextTick(function () {
+            var position = _this.getDrodownPosition(target, _this.$refs.dropdown, direction);
+
+            _this.position = {
+              left: position.left + 'px',
+              top: position.top + 'px'
+            };
+
+            _this.$emit('show', _extends({}, event, { position: position }));
+          });
+        }
+      });
+    },
+    hideEventListener: function hideEventListener(event) {
+      if (this.visible) {
+        this.visible = false;
+        this.$emit('hide', event);
+      }
+    },
+    getDrodownPosition: function getDrodownPosition(target, dropdown, direction) {
+      var trRect = target.getBoundingClientRect();
+      var ddRect = dropdown.getBoundingClientRect();
+
+      var shiftX = ddRect.width - trRect.width;
+      var shiftY = 0.5 * (ddRect.height + trRect.height);
+
+      var centerX = trRect.left - 0.5 * (ddRect.width - trRect.width) + window.scrollX;
+      var centerY = trRect.bottom - shiftY + window.scrollY;
+
+      var positionX = 0.5 * direction[0] * (ddRect.width + trRect.width);
+      var positionY = direction[1] * shiftY;
+
+      if (this.pointer) {
+        positionX += direction[0] * pointerSize;
+        positionY += direction[1] * pointerSize;
+      }
+
+      return {
+        left: centerX + positionX,
+        top: centerY - positionY
+      };
+    }
+  }
+};
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+  name: 'Tooltip',
+  props: {
+    event: {
+      type: String,
+      default: 'hover'
+    },
+    pointer: {
+      type: Boolean,
+      default: false
+    },
+    width: {
+      type: Number,
+      default: 160
+    }
+  },
+  data: function data() {
+    return {
+      value: ''
+    };
+  }
+};
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _Popover = __webpack_require__(2);
+
+var _Popover2 = _interopRequireDefault(_Popover);
+
+var _Tooltip = __webpack_require__(3);
+
+var _Tooltip2 = _interopRequireDefault(_Tooltip);
+
+var _bus = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var defaultPosition = 'bottom';
+
+var prepareBinding = function prepareBinding(binding) {
+  var arg = binding.arg,
+      modifiers = binding.modifiers,
+      value = binding.value;
+
+  var mods = Object.keys(modifiers || {});
+
+  return {
+    name: arg,
+    position: mods[0] || defaultPosition,
+    value: value
+  };
+};
+
+var addClickEventListener = function addClickEventListener(target, params) {
+  target.addEventListener('click', function (srcEvent) {
+    _bus.events.$emit('show:click', _extends({}, params, { target: target, srcEvent: srcEvent }));
+
+    var handler = function handler(srcEvent) {
+      _bus.events.$emit('hide:click', _extends({}, params, { target: target, srcEvent: srcEvent }));
+      document.removeEventListener('click', handler);
+    };
+
+    document.addEventListener('click', handler);
+    srcEvent.stopPropagation();
+  });
+};
+
+var addHoverEventListener = function addHoverEventListener(target, params) {
+  target.addEventListener('mouseover', function (srcEvent) {
+    _bus.events.$emit('show:hover', _extends({}, params, { target: target, srcEvent: srcEvent }));
+  });
+
+  target.addEventListener('mouseleave', function (srcEvent) {
+    _bus.events.$emit('hide:hover', _extends({}, params, { target: target, srcEvent: srcEvent }));
+  });
+};
+
+exports.default = {
+  install: function install(Vue) {
+    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    document.addEventListener('resize', function (event) {
+      _bus.events.$emit('hide', { srcEvent: event });
+    });
+
+    Vue.component('Popover', _Popover2.default);
+
+    Vue.directive('popover', {
+      inserted: function inserted(target, binding, vnode) {
+        var params = prepareBinding(binding);
+
+        addClickEventListener(target, params);
+        addHoverEventListener(target, params);
+      }
+    });
+
+    if (params.tooltip) {
+      Vue.component('Tooltip', _Tooltip2.default);
+    }
+  }
+};
+
+/***/ }),
 /* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(8)();
+// imports
+
+
+// module
+exports.push([module.i, ".vue-popover{display:block;position:absolute;background:#fff;box-shadow:0 4px 20px 0 rgba(52,73,94,.2);padding:5px;border-radius:5px;z-index:998}.vue-popover:before{display:block;position:absolute;width:0;height:0;content:\"\"}.vue-popover.dropdown-position-bottom:before{border-bottom:10px solid #fff;top:-10px;filter:drop-shadow(0 -2px 2px rgba(52,73,94,.1))}.vue-popover.dropdown-position-bottom:before,.vue-popover.dropdown-position-top:before{border-left:10px solid transparent;border-right:10px solid transparent;left:calc(50% - 10px)}.vue-popover.dropdown-position-top:before{border-top:10px solid #fff;bottom:-10px;filter:drop-shadow(0 2px 2px rgba(52,73,94,.1))}.vue-popover.dropdown-position-left:before{border-left:10px solid #fff;right:-10px;filter:drop-shadow(2px 0 2px rgba(52,73,94,.1))}.vue-popover.dropdown-position-left:before,.vue-popover.dropdown-position-right:before{border-top:10px solid transparent;border-bottom:10px solid transparent;top:calc(50% - 10px)}.vue-popover.dropdown-position-right:before{border-right:10px solid #fff;left:-10px;filter:drop-shadow(-2px 0 2px rgba(52,73,94,.1))}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -444,6 +535,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     ref: "dropdown",
     class: _vm.className,
     style: (_vm.style),
+    attrs: {
+      "data-popover": _vm.name
+    },
     on: {
       "click": function($event) {
         $event.stopPropagation();
@@ -453,20 +547,40 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: []}
 
 /***/ }),
-/* 8 */
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('popover', {
+    attrs: {
+      "name": "tooltip",
+      "pointer": _vm.pointer,
+      "width": _vm.width,
+      "event": _vm.event
+    },
+    on: {
+      "show": function($event) {
+        _vm.value = $event.value
+      }
+    }
+  }, [_vm._v("\n  " + _vm._s(_vm.value) + "\n")])
+},staticRenderFns: []}
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(4);
+var content = __webpack_require__(7);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(9)("898b3524", content, true);
+var update = __webpack_require__(12)("7527e474", content, true);
 
 /***/ }),
-/* 9 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -485,7 +599,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(10)
+var listToStyles = __webpack_require__(13)
 
 /*
 type StyleObject = {
@@ -687,7 +801,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 10 */
+/* 13 */
 /***/ (function(module, exports) {
 
 /**
@@ -720,10 +834,10 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_11__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_14__;
 
 /***/ })
 /******/ ]);
