@@ -34,30 +34,53 @@ Plugin contains a simple wrapper for `Tooltip`. To use it you will have to:
 
 Set `tooltip` flag in your `main.js`:
 ```javascript
-import VPopover from 'vue-js-popover`
+import VPopover from 'vue-js-popover'
 Vue.use(VPopover, { tooltip: true })
 ```
 
 Include `tooltip` component anywhere in the application:
 
-```
+```vue
 <tooltip/>
 ```
 
 Assign message to any element:
 ```vue
-<button v-popover:tooltip="'This is string value'">My butt0n</button>
+<button v-popover:tooltip="'This is a string value'">My butt0n</button>
 ```
 
-Component itself is simple af, 33 lines of code (mostly declarations). It is created for a purpose of demostrating how easily you can use the tool to create new things using the tool provided.
+Component is simple af - 33 lines of code (mostly declarations). It demonstrates how easily you can create new things using the provided tool.
 
+### Props
+```javascript
+props: {
+  /* Tooltip name.                           */
+  name:    { type: String,  required: true   },
+  
+  width:   { type: Number,  default: 180     },
+  
+  /* If set - will show a tiny tip.          */
+  pointer: { type: Boolean, default: true    },
+  
+  /* Name of the event which triggeres 
+     showing/hiding of the popover.
+     Possible values are: 'click', 'hover'.  */  
+  event:   { type: String,  default: 'click' }
+}
+```
 ### Positioning
 
 You can use `.left`, `.right`, `.top`, `.bottom` modifiers to set the position of the popover.
 
+Example:
+
+```vue
+<button v-popover.right="info">Edit (show popover right)</button> 
+```
+
 ### Styling
 
-Popover components have `data-popover="name"` argument that allows to apply styles to it. 
+Popover components has `data-popover="name"` argument that allows to apply styles to it. 
 
 Example:
 
@@ -74,10 +97,4 @@ div[data-popover="foo"] {
   line-height: 1.5;
   margin: 5px;
 }
-```
-
-Example:
-
-```vue
-<button v-popover:foo.left>Toggle popover (left)</button>
 ```
