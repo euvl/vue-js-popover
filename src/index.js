@@ -1,41 +1,63 @@
-import Component from './Component.vue'
+import Popover    from './Popover.vue'
+import Tooltip    from './Tooltip.vue'
 import { events } from './bus'
-
-const eventPairs = {
-  click: 'click',
-  mouneter: 'mouseleave'
-}
 
 const defaultPosition = 'bottom'
 
-export default {
-  install (Vue) {
-    Vue.component('Popover', Component)
+const prepareBinding = (binding) => {
+  let { arg, modifiers, value } = binding
+  let mods = Object.keys(modifiers || {})
 
+  return {
+    name: arg,
+    position: mods[0] || defaultPosition,
+    value
+  }
+}
+
+const addClickEventListener = (target, params) => {
+  target.addEventListener('click', (srcEvent) => {
+    events.$emit('show:click', { ...params, target, srcEvent })
+
+    let handler = (srcEvent) => {
+      events.$emit('hide:click', { ...params, target, srcEvent })
+      document.removeEventListener('click', handler)
+    }
+
+    document.addEventListener('click', handler)
+    srcEvent.stopPropagation()
+  })
+}
+
+const addHoverEventListener = (target, params) => {
+  target.addEventListener('mouseover', (srcEvent) => {
+    events.$emit('show:hover', { ...params, target, srcEvent })
+  })
+
+  target.addEventListener('mouseleave', (srcEvent) => {
+    events.$emit('hide:hover', { ...params, target, srcEvent })
+  })
+}
+
+export default {
+  install (Vue, params = {}) {
     document.addEventListener('resize', (event) => {
       events.$emit('hide', { srcEvent: event })
     })
 
+    Vue.component('Popover', Popover)
+
     Vue.directive('popover', {
       inserted: function (target, binding, vnode) {
-        let name = binding.arg
-        let modifiers = Object.keys(binding.modifiers || {})
-        let position = modifiers[0] || defaultPosition
+        let params = prepareBinding(binding)
 
-        target.addEventListener('click', (srcEvent) => {
-          let params = { name, target, position }
-
-          events.$emit('show', { ...params, srcEvent })
-
-          let closeListener = (srcEvent) => {
-            events.$emit('hide', { ...params, srcEvent })
-            document.removeEventListener('click', closeListener)
-          }
-
-          document.addEventListener('click', closeListener)
-          event.stopPropagation()
-        })
+        addClickEventListener(target, params)
+        addHoverEventListener(target, params)
       }
     })
+
+    if (params.tooltip) {
+      Vue.component('Tooltip', Tooltip)
+    }
   }
 }
