@@ -1,6 +1,6 @@
-### Vue.js 2.0+ popover
-
 [![npm version](https://badge.fury.io/js/vue-js-popover.svg)](https://badge.fury.io/js/vue-js-popover)
+
+### Vue.js 2.0+ popover
 
 <p align="center">
   <img src="https://media.giphy.com/media/xUA7beKmTnr9fkbI6k/giphy.gif">
