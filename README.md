@@ -49,7 +49,7 @@ Assign message to any element:
 <button v-popover:tooltip="'This is a string value'">My butt0n</button>
 ```
 
-Component is simple af - 33 lines of code (mostly declarations). It demonstrates how easily you can create new things using the provided tool.
+Tooltip component is simple af - 33 lines of code (mostly declarations). It demonstrates how easily you can create new things using the provided tool.
 
 ### Props
 ```javascript
