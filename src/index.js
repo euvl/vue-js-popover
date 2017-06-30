@@ -56,7 +56,14 @@ export default {
       }
     })
 
+    if (params.debug) {
+      console.log('vue-js-popover | params:', params)
+    }
+
     if (params.tooltip) {
+      if (params.debug) {
+        console.log('vue-js-popover | tooltip active')
+      }
       Vue.component('Tooltip', Tooltip)
     }
   }

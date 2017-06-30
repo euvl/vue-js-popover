@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define(["vue"], factory);
 	else if(typeof exports === 'object')
-		exports["VueJsToggleButton"] = factory(require("vue"));
+		exports["vue-js-popover"] = factory(require("vue"));
 	else
-		root["VueJsToggleButton"] = factory(root["vue"]);
+		root["vue-js-popover"] = factory(root["vue"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_14__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -450,7 +450,14 @@ exports.default = {
       }
     });
 
+    if (params.debug) {
+      console.log('vue-js-popover | params:', params);
+    }
+
     if (params.tooltip) {
+      if (params.debug) {
+        console.log('vue-js-popover | tooltip active');
+      }
       Vue.component('Tooltip', _Tooltip2.default);
     }
   }
