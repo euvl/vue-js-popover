@@ -1,14 +1,3 @@
-<template>
-  <div v-if="visible"
-       :class="className"
-       :style="style"
-       :data-popover="name"
-       ref="dropdown"
-       @click.stop>
-    <slot/>
-  </div>
-</template>
-
 <script>
 import { events } from './bus'
 
@@ -22,6 +11,29 @@ const directions = {
 
 export default {
   name: 'Popover',
+  render: function (createElement) {
+    if (!this.visible) {
+      return
+    }
+
+    return createElement(
+      'div',
+      {
+        class: this.className,
+        style: this.style,
+        attrs: {
+          'data-popover': this.name
+        },
+        on: {
+          click (event) {
+            event.stopPropagation()
+          }
+        },
+        ref: 'dropdown'
+      },
+      this.$slots.default
+    )
+  },
   props: {
     name: {
       type: String,
@@ -116,23 +128,29 @@ export default {
       let trRect = target.getBoundingClientRect()
       let ddRect = dropdown.getBoundingClientRect()
 
-      let shiftX = ddRect.width - trRect.width
+      // Position within the parent
+      let { offsetLeft, offsetTop } = target
+
+      // let shiftX = ddRect.width - trRect.width
       let shiftY = 0.5 * (ddRect.height + trRect.height)
 
-      let centerX = trRect.left - 0.5 * (ddRect.width - trRect.width) + window.scrollX
-      let centerY = trRect.bottom - shiftY + window.scrollY
+      // Center of the target element
+      let centerX = offsetLeft - 0.5 * (ddRect.width - trRect.width) 
+      let centerY = offsetTop + trRect.height - shiftY 
 
-      let positionX = 0.5 * direction[0] * (ddRect.width + trRect.width)
-      let positionY = direction[1] * shiftY
+      // Position of the dropdown relatively to target
+      let x = direction[0] * 0.5 * (ddRect.width + trRect.width)
+      let y = direction[1] * shiftY
 
+      // Pointer size correction
       if (this.pointer) {
-        positionX += direction[0] * pointerSize
-        positionY += direction[1] * pointerSize
+        x += direction[0] * pointerSize
+        y += direction[1] * pointerSize
       }
 
       return {
-        left: centerX + positionX,
-        top: centerY - positionY
+        left: centerX + x,
+        top: centerY - y
       }
     }
   }
