@@ -7,7 +7,7 @@
 		exports["vue-js-popover"] = factory(require("vue"));
 	else
 		root["vue-js-popover"] = factory(root["vue"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_14__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_13__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -88,7 +88,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.events = undefined;
 
-var _vue = __webpack_require__(14);
+var _vue = __webpack_require__(13);
 
 var _vue2 = _interopRequireDefault(_vue);
 
@@ -159,13 +159,13 @@ module.exports = function normalizeComponent (
 
 
 /* styles */
-__webpack_require__(11)
+__webpack_require__(10)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(4),
   /* template */
-  __webpack_require__(9),
+  null,
   /* scopeId */
   null,
   /* cssModules */
@@ -183,7 +183,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(5),
   /* template */
-  __webpack_require__(10),
+  __webpack_require__(9),
   /* scopeId */
   null,
   /* cssModules */
@@ -218,6 +218,25 @@ var directions = {
 
 exports.default = {
   name: 'Popover',
+  render: function render(createElement) {
+    if (!this.visible) {
+      return;
+    }
+
+    return createElement('div', {
+      class: this.className,
+      style: this.style,
+      attrs: {
+        'data-popover': this.name
+      },
+      on: {
+        click: function click(event) {
+          event.stopPropagation();
+        }
+      },
+      ref: 'dropdown'
+    }, this.$slots.default);
+  },
   props: {
     name: {
       type: String,
@@ -311,23 +330,25 @@ exports.default = {
       var trRect = target.getBoundingClientRect();
       var ddRect = dropdown.getBoundingClientRect();
 
-      var shiftX = ddRect.width - trRect.width;
+      var offsetLeft = target.offsetLeft,
+          offsetTop = target.offsetTop;
+
       var shiftY = 0.5 * (ddRect.height + trRect.height);
 
-      var centerX = trRect.left - 0.5 * (ddRect.width - trRect.width) + window.scrollX;
-      var centerY = trRect.bottom - shiftY + window.scrollY;
+      var centerX = offsetLeft - 0.5 * (ddRect.width - trRect.width);
+      var centerY = offsetTop + trRect.height - shiftY;
 
-      var positionX = 0.5 * direction[0] * (ddRect.width + trRect.width);
-      var positionY = direction[1] * shiftY;
+      var x = direction[0] * 0.5 * (ddRect.width + trRect.width);
+      var y = direction[1] * shiftY;
 
       if (this.pointer) {
-        positionX += direction[0] * pointerSize;
-        positionY += direction[1] * pointerSize;
+        x += direction[0] * pointerSize;
+        y += direction[1] * pointerSize;
       }
 
       return {
-        left: centerX + positionX,
-        top: centerY - positionY
+        left: centerX + x,
+        top: centerY - y
       };
     }
   }
@@ -538,26 +559,6 @@ module.exports = function() {
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return (_vm.visible) ? _c('div', {
-    ref: "dropdown",
-    class: _vm.className,
-    style: (_vm.style),
-    attrs: {
-      "data-popover": _vm.name
-    },
-    on: {
-      "click": function($event) {
-        $event.stopPropagation();
-      }
-    }
-  }, [_vm._t("default")], 2) : _vm._e()
-},staticRenderFns: []}
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('popover', {
     attrs: {
       "name": "tooltip",
@@ -574,7 +575,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: []}
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -584,10 +585,10 @@ var content = __webpack_require__(7);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(12)("7527e474", content, true);
+var update = __webpack_require__(11)("7527e474", content, true);
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -606,7 +607,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(13)
+var listToStyles = __webpack_require__(12)
 
 /*
 type StyleObject = {
@@ -808,7 +809,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports) {
 
 /**
@@ -841,10 +842,10 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_14__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_13__;
 
 /***/ })
 /******/ ]);
