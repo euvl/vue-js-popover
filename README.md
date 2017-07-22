@@ -75,7 +75,7 @@ You can use `.left`, `.right`, `.top`, `.bottom` modifiers to set the position o
 Example:
 
 ```vue
-<button v-popover.right="info">Edit (show popover right)</button> 
+<button v-popover:info.right>Edit (show popover right)</button> 
 ```
 
 ### Styling
