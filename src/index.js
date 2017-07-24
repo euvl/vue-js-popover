@@ -15,8 +15,8 @@ const prepareBinding = (binding) => {
   }
 }
 
-const addClickEventListener = (target, params) => {
-  target.addEventListener('click', (srcEvent) => {
+const addClickEventListener = (target, params, vnode) => {
+  const click = (srcEvent) => {
     events.$emit('show:click', { ...params, target, srcEvent })
 
     let handler = (srcEvent) => {
@@ -26,17 +26,31 @@ const addClickEventListener = (target, params) => {
 
     document.addEventListener('click', handler)
     srcEvent.stopPropagation()
-  })
+  }
+
+  target.addEventListener('click', click)
+
+  vnode.__popoverRemoveClickHandlers = () => {
+    target.removeEventListener('click', click)
+  }
 }
 
-const addHoverEventListener = (target, params) => {
-  target.addEventListener('mouseover', (srcEvent) => {
+const addHoverEventListener = (target, params, vnode) => {
+  const mouseover = (srcEvent) => {
     events.$emit('show:hover', { ...params, target, srcEvent })
-  })
+  }
 
-  target.addEventListener('mouseleave', (srcEvent) => {
+  const mouseleave = (srcEvent) => {
     events.$emit('hide:hover', { ...params, target, srcEvent })
-  })
+  }
+
+  target.addEventListener('mouseover', mouseover)
+  target.addEventListener('mouseleave', mouseleave)
+
+  vnode.__popoverRemoveHoverHandlers = () => {
+    target.removeEventListener('mouseover', mouseover)
+    target.removeEventListener('mouseleave', mouseleave)
+  }
 }
 
 export default {
@@ -48,11 +62,15 @@ export default {
     Vue.component('Popover', Popover)
 
     Vue.directive('popover', {
-      inserted: function (target, binding, vnode) {
+      bind: function (target, binding, vnode) {
         let params = prepareBinding(binding)
 
-        addClickEventListener(target, params)
-        addHoverEventListener(target, params)
+        addClickEventListener(target, params, vnode)
+        addHoverEventListener(target, params, vnode)
+      },
+      unbind: function (target, binding, vnode) {
+        vnode.__popoverRemoveHoverHandlers()
+        vnode.__popoverRemoveClickHandlers()
       }
     })
 
