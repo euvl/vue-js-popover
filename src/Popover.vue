@@ -1,7 +1,7 @@
 <script>
 import { events } from './bus'
 
-const pointerSize = 10
+const pointerSize = 6
 const directions = {
   left:   [-1, 0],
   right:  [1, 0],
@@ -50,6 +50,11 @@ export default {
     event: {
       type: String,
       default: 'click'
+    },
+    anchor: {
+      type: Number,
+      default: 0.5,
+      validator: (v) => v >= 0 && v <= 1
     }
   },
   data () {
@@ -138,6 +143,9 @@ export default {
       let centerX = offsetLeft - 0.5 * (ddRect.width - trRect.width) 
       let centerY = offsetTop + trRect.height - shiftY 
 
+      // let anchorX = direction[0] * this.anchor
+      // let anchorY = direction[0] * this.anchor
+
       // Position of the dropdown relatively to target
       let x = direction[0] * 0.5 * (ddRect.width + trRect.width)
       let y = direction[1] * shiftY
@@ -158,7 +166,7 @@ export default {
 </script>
 
 <style lang="scss">
-$pointer-size: 10px;
+$pointer-size: 6px;
 
 .vue-popover {
   display: block;
