@@ -208,7 +208,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _bus = __webpack_require__(0);
 
-var pointerSize = 10;
+var pointerSize = 6;
 var directions = {
   left: [-1, 0],
   right: [1, 0],
@@ -253,6 +253,13 @@ exports.default = {
     event: {
       type: String,
       default: 'click'
+    },
+    anchor: {
+      type: Number,
+      default: 0.5,
+      validator: function validator(v) {
+        return v >= 0 && v <= 1;
+      }
     }
   },
   data: function data() {
@@ -428,8 +435,8 @@ var prepareBinding = function prepareBinding(binding) {
   };
 };
 
-var addClickEventListener = function addClickEventListener(target, params) {
-  target.addEventListener('click', function (srcEvent) {
+var addClickEventListener = function addClickEventListener(target, params, vnode) {
+  var click = function click(srcEvent) {
     _bus.events.$emit('show:click', _extends({}, params, { target: target, srcEvent: srcEvent }));
 
     var handler = function handler(srcEvent) {
@@ -439,17 +446,31 @@ var addClickEventListener = function addClickEventListener(target, params) {
 
     document.addEventListener('click', handler);
     srcEvent.stopPropagation();
-  });
+  };
+
+  target.addEventListener('click', click);
+
+  vnode.__popoverRemoveClickHandlers = function () {
+    target.removeEventListener('click', click);
+  };
 };
 
-var addHoverEventListener = function addHoverEventListener(target, params) {
-  target.addEventListener('mouseover', function (srcEvent) {
+var addHoverEventListener = function addHoverEventListener(target, params, vnode) {
+  var mouseover = function mouseover(srcEvent) {
     _bus.events.$emit('show:hover', _extends({}, params, { target: target, srcEvent: srcEvent }));
-  });
+  };
 
-  target.addEventListener('mouseleave', function (srcEvent) {
+  var mouseleave = function mouseleave(srcEvent) {
     _bus.events.$emit('hide:hover', _extends({}, params, { target: target, srcEvent: srcEvent }));
-  });
+  };
+
+  target.addEventListener('mouseover', mouseover);
+  target.addEventListener('mouseleave', mouseleave);
+
+  vnode.__popoverRemoveHoverHandlers = function () {
+    target.removeEventListener('mouseover', mouseover);
+    target.removeEventListener('mouseleave', mouseleave);
+  };
 };
 
 exports.default = {
@@ -463,11 +484,15 @@ exports.default = {
     Vue.component('Popover', _Popover2.default);
 
     Vue.directive('popover', {
-      inserted: function inserted(target, binding, vnode) {
+      bind: function bind(target, binding, vnode) {
         var params = prepareBinding(binding);
 
-        addClickEventListener(target, params);
-        addHoverEventListener(target, params);
+        addClickEventListener(target, params, vnode);
+        addHoverEventListener(target, params, vnode);
+      },
+      unbind: function unbind(target, binding, vnode) {
+        vnode.__popoverRemoveHoverHandlers();
+        vnode.__popoverRemoveClickHandlers();
       }
     });
 
@@ -493,7 +518,7 @@ exports = module.exports = __webpack_require__(8)();
 
 
 // module
-exports.push([module.i, ".vue-popover{display:block;position:absolute;background:#fff;box-shadow:0 4px 20px 0 rgba(52,73,94,.2);padding:5px;border-radius:5px;z-index:998}.vue-popover:before{display:block;position:absolute;width:0;height:0;content:\"\"}.vue-popover.dropdown-position-bottom:before{border-bottom:10px solid #fff;top:-10px;filter:drop-shadow(0 -2px 2px rgba(52,73,94,.1))}.vue-popover.dropdown-position-bottom:before,.vue-popover.dropdown-position-top:before{border-left:10px solid transparent;border-right:10px solid transparent;left:calc(50% - 10px)}.vue-popover.dropdown-position-top:before{border-top:10px solid #fff;bottom:-10px;filter:drop-shadow(0 2px 2px rgba(52,73,94,.1))}.vue-popover.dropdown-position-left:before{border-left:10px solid #fff;right:-10px;filter:drop-shadow(2px 0 2px rgba(52,73,94,.1))}.vue-popover.dropdown-position-left:before,.vue-popover.dropdown-position-right:before{border-top:10px solid transparent;border-bottom:10px solid transparent;top:calc(50% - 10px)}.vue-popover.dropdown-position-right:before{border-right:10px solid #fff;left:-10px;filter:drop-shadow(-2px 0 2px rgba(52,73,94,.1))}", ""]);
+exports.push([module.i, ".vue-popover{display:block;position:absolute;background:#fff;box-shadow:0 4px 20px 0 rgba(52,73,94,.2);padding:5px;border-radius:5px;z-index:998}.vue-popover:before{display:block;position:absolute;width:0;height:0;content:\"\"}.vue-popover.dropdown-position-bottom:before{border-bottom:6px solid #fff;top:-6px;filter:drop-shadow(0 -2px 2px rgba(52,73,94,.1))}.vue-popover.dropdown-position-bottom:before,.vue-popover.dropdown-position-top:before{border-left:6px solid transparent;border-right:6px solid transparent;left:calc(50% - 6px)}.vue-popover.dropdown-position-top:before{border-top:6px solid #fff;bottom:-6px;filter:drop-shadow(0 2px 2px rgba(52,73,94,.1))}.vue-popover.dropdown-position-left:before{border-left:6px solid #fff;right:-6px;filter:drop-shadow(2px 0 2px rgba(52,73,94,.1))}.vue-popover.dropdown-position-left:before,.vue-popover.dropdown-position-right:before{border-top:6px solid transparent;border-bottom:6px solid transparent;top:calc(50% - 6px)}.vue-popover.dropdown-position-right:before{border-right:6px solid #fff;left:-6px;filter:drop-shadow(-2px 0 2px rgba(52,73,94,.1))}", ""]);
 
 // exports
 
