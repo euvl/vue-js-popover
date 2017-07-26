@@ -491,8 +491,10 @@ exports.default = {
         addHoverEventListener(target, params, vnode);
       },
       unbind: function unbind(target, binding, vnode) {
-        vnode.__popoverRemoveHoverHandlers();
-        vnode.__popoverRemoveClickHandlers();
+        if (vnode) {
+          vnode.__popoverRemoveHoverHandlers();
+          vnode.__popoverRemoveClickHandlers();
+        }
       }
     });
 
