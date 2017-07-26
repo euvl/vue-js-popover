@@ -276,6 +276,10 @@ exports.default = {
     _bus.events.$on(this.showEventName, this.showEventListener);
     _bus.events.$on(this.hideEventName, this.hideEventListener);
   },
+  beforeDestroy: function beforeDestroy() {
+    _bus.events.$off(this.showEventName, this.showEventListener);
+    _bus.events.$off(this.hideEventName, this.hideEventListener);
+  },
 
   computed: {
     showEventName: function showEventName() {
@@ -435,7 +439,7 @@ var prepareBinding = function prepareBinding(binding) {
   };
 };
 
-var addClickEventListener = function addClickEventListener(target, params, vnode) {
+var addClickEventListener = function addClickEventListener(target, params) {
   var click = function click(srcEvent) {
     _bus.events.$emit('show:click', _extends({}, params, { target: target, srcEvent: srcEvent }));
 
@@ -450,12 +454,12 @@ var addClickEventListener = function addClickEventListener(target, params, vnode
 
   target.addEventListener('click', click);
 
-  vnode.__popoverRemoveClickHandlers = function () {
+  target.$popoverRemoveClickHandlers = function () {
     target.removeEventListener('click', click);
   };
 };
 
-var addHoverEventListener = function addHoverEventListener(target, params, vnode) {
+var addHoverEventListener = function addHoverEventListener(target, params) {
   var mouseover = function mouseover(srcEvent) {
     _bus.events.$emit('show:hover', _extends({}, params, { target: target, srcEvent: srcEvent }));
   };
@@ -467,7 +471,7 @@ var addHoverEventListener = function addHoverEventListener(target, params, vnode
   target.addEventListener('mouseover', mouseover);
   target.addEventListener('mouseleave', mouseleave);
 
-  vnode.__popoverRemoveHoverHandlers = function () {
+  target.$popoverRemoveHoverHandlers = function () {
     target.removeEventListener('mouseover', mouseover);
     target.removeEventListener('mouseleave', mouseleave);
   };
@@ -484,23 +488,17 @@ exports.default = {
     Vue.component('Popover', _Popover2.default);
 
     Vue.directive('popover', {
-      bind: function bind(target, binding, vnode) {
+      bind: function bind(target, binding) {
         var params = prepareBinding(binding);
 
-        addClickEventListener(target, params, vnode);
-        addHoverEventListener(target, params, vnode);
+        addClickEventListener(target, params);
+        addHoverEventListener(target, params);
       },
-      unbind: function unbind(target, binding, vnode) {
-        if (vnode) {
-          vnode.__popoverRemoveHoverHandlers();
-          vnode.__popoverRemoveClickHandlers();
-        }
+      unbind: function unbind(target, binding) {
+        target.$popoverRemoveHoverHandlers();
+        target.$popoverRemoveClickHandlers();
       }
     });
-
-    if (params.debug) {
-      console.log('vue-js-popover | params:', params);
-    }
 
     if (params.tooltip) {
       if (params.debug) {
