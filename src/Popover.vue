@@ -71,6 +71,10 @@ export default {
     events.$on(this.showEventName, this.showEventListener)
     events.$on(this.hideEventName, this.hideEventListener)
   },
+  beforeDestroy () {
+    events.$off(this.showEventName, this.showEventListener)
+    events.$off(this.hideEventName, this.hideEventListener)
+  },
   computed: {
     showEventName () {
       return `show:${this.event}`

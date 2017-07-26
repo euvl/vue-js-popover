@@ -15,7 +15,7 @@ const prepareBinding = (binding) => {
   }
 }
 
-const addClickEventListener = (target, params, vnode) => {
+const addClickEventListener = (target, params) => {
   const click = (srcEvent) => {
     events.$emit('show:click', { ...params, target, srcEvent })
 
@@ -30,12 +30,12 @@ const addClickEventListener = (target, params, vnode) => {
 
   target.addEventListener('click', click)
 
-  vnode.__popoverRemoveClickHandlers = () => {
+  target.$popoverRemoveClickHandlers = () => {
     target.removeEventListener('click', click)
   }
 }
 
-const addHoverEventListener = (target, params, vnode) => {
+const addHoverEventListener = (target, params) => {
   const mouseover = (srcEvent) => {
     events.$emit('show:hover', { ...params, target, srcEvent })
   }
@@ -47,7 +47,7 @@ const addHoverEventListener = (target, params, vnode) => {
   target.addEventListener('mouseover', mouseover)
   target.addEventListener('mouseleave', mouseleave)
 
-  vnode.__popoverRemoveHoverHandlers = () => {
+  target.$popoverRemoveHoverHandlers = () => {
     target.removeEventListener('mouseover', mouseover)
     target.removeEventListener('mouseleave', mouseleave)
   }
@@ -62,23 +62,17 @@ export default {
     Vue.component('Popover', Popover)
 
     Vue.directive('popover', {
-      bind: function (target, binding, vnode) {
+      bind: function (target, binding) {
         let params = prepareBinding(binding)
 
-        addClickEventListener(target, params, vnode)
-        addHoverEventListener(target, params, vnode)
+        addClickEventListener(target, params)
+        addHoverEventListener(target, params)
       },
-      unbind: function (target, binding, vnode) {
-        if (vnode) {
-          vnode.__popoverRemoveHoverHandlers()
-          vnode.__popoverRemoveClickHandlers()
-        }
+      unbind: function (target, binding) {
+        target.$popoverRemoveHoverHandlers()
+        target.$popoverRemoveClickHandlers()
       }
     })
-
-    if (params.debug) {
-      console.log('vue-js-popover | params:', params)
-    }
 
     if (params.tooltip) {
       if (params.debug) {
