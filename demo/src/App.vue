@@ -19,6 +19,10 @@
         </button>
       </div>
 
+      <div>
+        <button v-popover="{ name: 'aaa' }">TEST #1</button>
+      </div>
+
       <transition name="show-from-left">
         <popover name="aaa" :width="120">
           <a href="http://yev.io">🎉 Hi 🎉</a>
@@ -32,7 +36,7 @@
       </transition>
 
       <popover name="ccc" @show="showFour">
-        <div>Hm... 🤔</div>
+        <div>Hm...😠</div>
         <div>Opened at <i>{{openedTime}}</i></div>
       </popover>
 
@@ -49,14 +53,7 @@
 </template>
 
 <script>
-export default {
-  name: 'app',
-  data () {
-    return {
-      openedTime: '',
-      example: {
-        html:
-`npm install vue-js-popover --save
+const html = `npm install vue-js-popover --save
 
 ...
 
@@ -73,6 +70,14 @@ Vue.use(Popover)
   Hello!
 </popover>
 `
+
+export default {
+  name: 'app',
+  data () {
+    return {
+      openedTime: '',
+      example: {
+        html
       }
     }
   },

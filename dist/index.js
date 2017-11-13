@@ -425,15 +425,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var defaultPosition = 'bottom';
 
-var prepareBinding = function prepareBinding(binding) {
-  var arg = binding.arg,
-      modifiers = binding.modifiers,
-      value = binding.value;
+var prepareBinding = function prepareBinding(_ref) {
+  var _ref$arg = _ref.arg,
+      arg = _ref$arg === undefined ? '' : _ref$arg,
+      _ref$modifiers = _ref.modifiers,
+      modifiers = _ref$modifiers === undefined ? {} : _ref$modifiers,
+      _ref$value = _ref.value,
+      value = _ref$value === undefined ? {} : _ref$value;
 
-  var mods = Object.keys(modifiers || {});
+  var mods = Object.keys(modifiers);
 
   return {
-    name: arg,
+    name: value.name ? value.name : arg,
     position: mods[0] || defaultPosition,
     value: value
   };

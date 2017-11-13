@@ -4,12 +4,11 @@ import { events } from './bus'
 
 const defaultPosition = 'bottom'
 
-const prepareBinding = (binding) => {
-  let { arg, modifiers, value } = binding
-  let mods = Object.keys(modifiers || {})
+const prepareBinding = ({ arg = '', modifiers = {}, value = {} }) => {
+  let mods = Object.keys(modifiers)
 
   return {
-    name: arg,
+    name: value.name ? value.name : arg,
     position: mods[0] || defaultPosition,
     value
   }
