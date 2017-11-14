@@ -6,12 +6,10 @@ const defaultPosition = 'bottom'
 
 const prepareBinding = ({ arg = '', modifiers = {}, value = {} }) => {
   let mods = Object.keys(modifiers)
+  let name = typeof value === 'object' && value.name ? value.name : arg
+  let position = mods[0] || defaultPosition
 
-  return {
-    name: value.name ? value.name : arg,
-    position: mods[0] || defaultPosition,
-    value
-  }
+  return { name, position, value }
 }
 
 const addClickEventListener = (target, params) => {

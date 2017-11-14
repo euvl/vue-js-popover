@@ -411,6 +411,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _Popover = __webpack_require__(2);
 
 var _Popover2 = _interopRequireDefault(_Popover);
@@ -434,12 +436,10 @@ var prepareBinding = function prepareBinding(_ref) {
       value = _ref$value === undefined ? {} : _ref$value;
 
   var mods = Object.keys(modifiers);
+  var name = (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && value.name ? value.name : arg;
+  var position = mods[0] || defaultPosition;
 
-  return {
-    name: value.name ? value.name : arg,
-    position: mods[0] || defaultPosition,
-    value: value
-  };
+  return { name: name, position: position, value: value };
 };
 
 var addClickEventListener = function addClickEventListener(target, params) {
