@@ -28,6 +28,12 @@ Use:
 </popover>
 ```
 
+Or: 
+```vue
+<button v-popover="{ name: 'foo' }">Toggle popover</button>
+
+```
+
 ### Tooltip 
 
 Plugin contains a simple wrapper for `Tooltip`. To use it you will have to:
