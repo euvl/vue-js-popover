@@ -82,6 +82,8 @@ Example:
 
 ```vue
 <button v-popover:info.right>Edit (show popover right)</button> 
+
+<button v-popover.left={ name: 'info' }>Edit</button>
 ```
 
 ### Styling
