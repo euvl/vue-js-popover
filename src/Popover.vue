@@ -113,7 +113,7 @@ export default {
 
           this.$nextTick(() => {
             let position = this
-              .getDrodownPosition(target, this.$refs.dropdown, direction)
+              .getDropdownPosition(target, this.$refs.dropdown, direction)
 
             this.position = {
               left: `${position.left}px`,
@@ -133,12 +133,13 @@ export default {
       }
     },
 
-    getDrodownPosition (target, dropdown, direction) {
+    getDropdownPosition (target, dropdown, direction) {
       let trRect = target.getBoundingClientRect()
       let ddRect = dropdown.getBoundingClientRect()
 
       // Position within the parent
-      let { offsetLeft, offsetTop } = target
+      let offsetLeft = trRect.left
+      let offsetTop = trRect.top
 
       // let shiftX = ddRect.width - trRect.width
       let shiftY = 0.5 * (ddRect.height + trRect.height)
