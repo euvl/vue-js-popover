@@ -112,15 +112,17 @@ export default {
           this.visible = true
 
           this.$nextTick(() => {
-            let position = this
-              .getDropdownPosition(target, this.$refs.dropdown, direction)
+            this.$emit('show', event)
+            
+            setTimeout(()=> {
+              let position = this
+                .getDropdownPosition(target, this.$refs.dropdown, direction)
 
-            this.position = {
-              left: `${position.left}px`,
-              top: `${position.top}px`
-            }
-
-            this.$emit('show', { ...event, position })
+              this.position = {
+                left: `${position.left}px`,
+                top: `${position.top}px`
+              }
+            }, 0)
           })
         }
       })
