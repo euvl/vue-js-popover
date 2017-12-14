@@ -114,15 +114,15 @@ export default {
           this.$nextTick(() => {
             this.$emit('show', event)
             
-            setTimeout(()=> {
+            this.$nextTick(()=>{
               let position = this
                 .getDropdownPosition(target, this.$refs.dropdown, direction)
-
+                
               this.position = {
                 left: `${position.left}px`,
                 top: `${position.top}px`
               }
-            }, 0)
+            })
           })
         }
       })
