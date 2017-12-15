@@ -33,7 +33,7 @@ const addClickEventListener = (target, params) => {
 }
 
 const addHoverEventListener = (target, params) => {
-  const mouseover = (srcEvent) => {
+  const mouseenter = (srcEvent) => {
     events.$emit('show:hover', { ...params, target, srcEvent })
   }
 
@@ -41,11 +41,11 @@ const addHoverEventListener = (target, params) => {
     events.$emit('hide:hover', { ...params, target, srcEvent })
   }
 
-  target.addEventListener('mouseover', mouseover)
+  target.addEventListener('mouseenter', mouseenter)
   target.addEventListener('mouseleave', mouseleave)
 
   target.$popoverRemoveHoverHandlers = () => {
-    target.removeEventListener('mouseover', mouseover)
+    target.removeEventListener('mouseenter', mouseenter)
     target.removeEventListener('mouseleave', mouseleave)
   }
 }
