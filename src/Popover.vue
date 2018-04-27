@@ -55,6 +55,10 @@ export default {
       type: Number,
       default: 0.5,
       validator: (v) => v >= 0 && v <= 1
+    },
+    delay: {
+      type: Number,
+      default: 0
     }
   },
   data () {
@@ -64,7 +68,9 @@ export default {
       position: {
         left: 0,
         top: 0
-      }
+      },
+      delayFunc: null
+
     }
   },
   mounted () {
@@ -106,29 +112,35 @@ export default {
         let { target, name, position } = event
 
         if (name === this.name) {
-          let direction = directions[position]
+            this.delayFunc = setTimeout(() => {
+                let direction = directions[position]
 
-          this.positionClass = `dropdown-position-${position}`
-          this.visible = true
+                this.positionClass = `dropdown-position-${position}`
+                this.visible = true
 
-          this.$nextTick(() => {
-            this.$emit('show', event)
-            
-            this.$nextTick(()=>{
-              let position = this
-                .getDropdownPosition(target, this.$refs.dropdown, direction)
-                
-              this.position = {
-                left: `${position.left}px`,
-                top: `${position.top}px`
-              }
-            })
-          })
+                this.$nextTick(() => {
+                    this.$emit('show', event)
+
+                    this.$nextTick(() => {
+                        let position = this
+                            .getDropdownPosition(target, this.$refs.dropdown, direction)
+
+                        this.position = {
+                            left: `${position.left}px`,
+                            top: `${position.top}px`
+                        }
+                    })
+                })
+            }, this.delay)
         }
       })
     },
 
     hideEventListener (event) {
+      if (this.delayFunc) {
+        clearTimeout(this.delayFunc)
+        this.delayFunc = null
+      }
       if (this.visible) {
         this.visible = false
         this.$emit('hide', event)
