@@ -1,246 +1,262 @@
 <script>
-import { events } from './bus'
+    import {events} from './bus'
 
-const pointerSize = 6
-const directions = {
-  left:   [-1, 0],
-  right:  [1, 0],
-  top:    [0, 1],
-  bottom: [0, -1]
-}
-
-export default {
-  name: 'Popover',
-  render: function (createElement) {
-    if (!this.visible) {
-      return
+    const pointerSize = 6
+    const directions = {
+        left: [-1, 0],
+        right: [1, 0],
+        top: [0, 1],
+        bottom: [0, -1]
     }
 
-    return createElement(
-      'div',
-      {
-        class: this.className,
-        style: this.style,
-        attrs: {
-          'data-popover': this.name
+    export default {
+        name: 'Popover',
+        render: function (createElement) {
+            if (!this.visible) {
+                return
+            }
+
+            return createElement(
+                'div',
+                {
+                    class: this.className,
+                    style: this.style,
+                    attrs: {
+                        'data-popover': this.name
+                    },
+                    on: {
+                        click(event) {
+                            event.stopPropagation()
+                        }
+                    },
+                    ref: 'dropdown'
+                },
+                this.$slots.default
+            )
         },
-        on: {
-          click (event) {
-            event.stopPropagation()
-          }
+        props: {
+            name: {
+                type: String,
+                required: true
+            },
+            width: {
+                type: Number,
+                default: 180
+            },
+            pointer: {
+                type: Boolean,
+                default: true
+            },
+            event: {
+                type: String,
+                default: 'click'
+            },
+            anchor: {
+                type: Number,
+                default: 0.5,
+                validator: (v) => v >= 0 && v <= 1
+            },
+            delay: {
+                type: Number,
+                default: 0
+            }
         },
-        ref: 'dropdown'
-      },
-      this.$slots.default
-    )
-  },
-  props: {
-    name: {
-      type: String,
-      required: true
-    },
-    width: {
-      type: Number,
-      default: 180
-    },
-    pointer: {
-      type: Boolean,
-      default: true
-    },
-    event: {
-      type: String,
-      default: 'click'
-    },
-    anchor: {
-      type: Number,
-      default: 0.5,
-      validator: (v) => v >= 0 && v <= 1
-    },
-    delay: {
-      type: Number,
-      default: 0
-    }
-  },
-  data () {
-    return {
-      visible: false,
-      positionClass: '',
-      position: {
-        left: 0,
-        top: 0
-      },
-      delayFunc: null
-
-    }
-  },
-  mounted () {
-    events.$on(this.showEventName, this.showEventListener)
-    events.$on(this.hideEventName, this.hideEventListener)
-  },
-  beforeDestroy () {
-    events.$off(this.showEventName, this.showEventListener)
-    events.$off(this.hideEventName, this.hideEventListener)
-  },
-  computed: {
-    showEventName () {
-      return `show:${this.event}`
-    },
-    hideEventName () {
-      return `hide:${this.event}`
-    },
-    className () {
-      return [
-        'vue-popover',
-        this.pointer && this.positionClass
-      ]
-    },
-    style () {
-      return {
-        width: `${this.width}px`,
-        ...this.position
-      }
-    }
-  },
-  methods: {
-    showEventListener (event) {
-      if (this.visible) {
-        events.$emit(this.hideEventName)
-        return
-      }
-
-      this.$nextTick(() => {
-        let { target, name, position } = event
-
-        if (name === this.name) {
-            this.delayFunc = setTimeout(() => {
-                let direction = directions[position]
-
-                this.positionClass = `dropdown-position-${position}`
-                this.visible = true
+        data() {
+            return {
+                visible: false,
+                positionClass: '',
+                position: {
+                    left: 0,
+                    top: 0
+                },
+                asyncFun: null,
+                myEvent: null
+            }
+        },
+        mounted() {
+            events.$on(this.showEventName, this.showEventListener)
+            events.$on(this.hideEventName, this.hideEventListener)
+        },
+        beforeDestroy() {
+            events.$off(this.showEventName, this.showEventListener)
+            events.$off(this.hideEventName, this.hideEventListener)
+        },
+        computed: {
+            showEventName() {
+                return `show:${this.event}`
+            },
+            hideEventName() {
+                return `hide:${this.event}`
+            },
+            className() {
+                return [
+                    'vue-popover',
+                    this.pointer && this.positionClass
+                ]
+            },
+            style() {
+                return {
+                    width: `${this.width}px`,
+                    ...this.position
+                }
+            }
+        },
+        methods: {
+            showEventListener(event) {
+                if (this.visible) {
+                    events.$emit(this.hideEventName)
+                    return
+                }
 
                 this.$nextTick(() => {
-                    this.$emit('show', event)
-
-                    this.$nextTick(() => {
-                        let position = this
-                            .getDropdownPosition(target, this.$refs.dropdown, direction)
-
-                        this.position = {
-                            left: `${position.left}px`,
-                            top: `${position.top}px`
+                    let {target, name, position} = event
+                    this.myEvent = event
+                    if (name === this.name) {
+                        if (this.asyncFun) {
+                            clearTimeout(this.asyncFun)
                         }
-                    })
+                        this.asyncFun = setTimeout(() => {
+                            let direction = directions[position]
+
+                            this.positionClass = `dropdown-position-${position}`
+                            this.visible = true
+
+                            this.$nextTick(() => {
+                                this.$emit('show', event)
+
+                                this.$nextTick(() => {
+                                    let position = this
+                                        .getDropdownPosition(target, this.$refs.dropdown, direction)
+
+                                    this.position = {
+                                        left: `${position.left}px`,
+                                        top: `${position.top}px`
+                                    }
+                                })
+                            })
+                        }, this.delay)
+                    }
                 })
-            }, this.delay)
+            },
+            cleanLayout() {
+                let {target, position} = this.myEvent
+                let direction = directions[position]
+                this.$nextTick(() => {
+                    let position = this
+                        .getDropdownPosition(target, this.$refs.dropdown, direction)
+
+                    this.position = {
+                        left: `${position.left}px`,
+                        top: `${position.top}px`
+                    }
+                })
+            },
+            hideEventListener(event) {
+                if (this.asyncFun) {
+                    clearTimeout(this.asyncFun)
+                    this.asyncFun = null
+                }
+                if (this.visible) {
+                    this.visible = false
+                    this.$emit('hide', event)
+                }
+            },
+
+            getDropdownPosition(target, dropdown, direction) {
+                let trRect = target.getBoundingClientRect()
+                let ddRect = dropdown.getBoundingClientRect()
+
+                // Position within the parent
+                let offsetLeft = trRect.left
+                let offsetTop = trRect.top
+
+                // let shiftX = ddRect.width - trRect.width
+                let shiftY = 0.5 * (ddRect.height + trRect.height)
+
+                // Center of the target element
+                let centerX = offsetLeft - 0.5 * (ddRect.width - trRect.width)
+                let centerY = offsetTop + trRect.height - shiftY
+
+                // let anchorX = direction[0] * this.anchor
+                // let anchorY = direction[0] * this.anchor
+
+                // Position of the dropdown relatively to target
+                let x = direction[0] * 0.5 * (ddRect.width + trRect.width)
+                let y = direction[1] * shiftY
+
+                // Pointer size correction
+                if (this.pointer) {
+                    x += direction[0] * pointerSize
+                    y += direction[1] * pointerSize
+                }
+
+                return {
+                    left: centerX + x,
+                    top: centerY - y
+                }
+            }
         }
-      })
-    },
-
-    hideEventListener (event) {
-      if (this.delayFunc) {
-        clearTimeout(this.delayFunc)
-        this.delayFunc = null
-      }
-      if (this.visible) {
-        this.visible = false
-        this.$emit('hide', event)
-      }
-    },
-
-    getDropdownPosition (target, dropdown, direction) {
-      let trRect = target.getBoundingClientRect()
-      let ddRect = dropdown.getBoundingClientRect()
-
-      // Position within the parent
-      let offsetLeft = trRect.left
-      let offsetTop = trRect.top
-
-      // let shiftX = ddRect.width - trRect.width
-      let shiftY = 0.5 * (ddRect.height + trRect.height)
-
-      // Center of the target element
-      let centerX = offsetLeft - 0.5 * (ddRect.width - trRect.width) 
-      let centerY = offsetTop + trRect.height - shiftY 
-
-      // let anchorX = direction[0] * this.anchor
-      // let anchorY = direction[0] * this.anchor
-
-      // Position of the dropdown relatively to target
-      let x = direction[0] * 0.5 * (ddRect.width + trRect.width)
-      let y = direction[1] * shiftY
-
-      // Pointer size correction
-      if (this.pointer) {
-        x += direction[0] * pointerSize
-        y += direction[1] * pointerSize
-      }
-
-      return {
-        left: centerX + x,
-        top: centerY - y
-      }
     }
-  }
-}
 </script>
 
-<style lang="scss">
-$pointer-size: 6px;
+<style>
+    .vue-popover {
+        position: absolute;
+        background: #fff;
+        min-width: 150px;
+        border: 1px solid #ebeef5;
+        padding: 12px;
+        z-index: 2000;
+        color: #606266;
+        line-height: 1.4;
+        text-align: justify;
+        font-size: 14px;
+        -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+        border-radius: 4px;
+    }
 
-.vue-popover {
-  display: block;
-  position: absolute;
-  background: #fff;
+    .vue-popover:before {
+        display: block;
+        position: absolute;
+        width: 0;
+        height: 0;
+        content: "";
+    }
 
-  box-shadow: 0px 4px 20px 0px rgba(52, 73, 94, 0.2);
+    .vue-popover.dropdown-position-bottom:before {
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid #fff;
+        top: -6px;
+        left: calc(50% - 6px);
+        filter: drop-shadow(0px -2px 2px rgba(52, 73, 94, 0.1));
+    }
 
-  padding: 5px;
-  border-radius: 5px;
+    .vue-popover.dropdown-position-top:before {
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid #fff;
+        bottom: -6px;
+        left: calc(50% - 6px);
+        filter: drop-shadow(0px 2px 2px rgba(52, 73, 94, 0.1));
+    }
 
-  z-index: 998;
+    .vue-popover.dropdown-position-left:before {
+        border-top: 6px solid transparent;
+        border-bottom: 6px solid transparent;
+        border-left: 6px solid #fff;
+        right: -6px;
+        top: calc(50% - 6px);
+        filter: drop-shadow(2px 0px 2px rgba(52, 73, 94, 0.1));
+    }
 
-  &:before {
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    content: '';
-  }
-
-  &.dropdown-position-bottom:before {
-    border-left: $pointer-size solid transparent;
-    border-right: $pointer-size solid transparent;
-    border-bottom: $pointer-size solid #fff;
-    top: -$pointer-size;
-    left: calc(50% - #{$pointer-size});
-    filter: drop-shadow(0px -2px 2px rgba(52, 73, 94, 0.1));
-  }
-
-  &.dropdown-position-top:before {
-    border-left: $pointer-size solid transparent;
-    border-right: $pointer-size solid transparent;
-    border-top: $pointer-size solid #fff;
-    bottom: -$pointer-size;
-    left: calc(50% - #{$pointer-size});
-    filter: drop-shadow(0px 2px 2px rgba(52, 73, 94, 0.1));
-  }
-
-  &.dropdown-position-left:before {
-    border-top: $pointer-size solid transparent;
-    border-bottom: $pointer-size solid transparent;
-    border-left: $pointer-size solid #fff;
-    right: -$pointer-size;
-    top: calc(50% - #{$pointer-size});
-    filter: drop-shadow(2px 0px 2px rgba(52, 73, 94, 0.1));
-  }
-
-  &.dropdown-position-right:before {
-    border-top: $pointer-size solid transparent;
-    border-bottom: $pointer-size solid transparent;
-    border-right: $pointer-size solid #fff;
-    left: -$pointer-size;
-    top: calc(50% - #{$pointer-size});
-    filter: drop-shadow(-2px 0px 2px rgba(52, 73, 94, 0.1));
-  }
-}
+    .vue-popover.dropdown-position-right:before {
+        border-top: 6px solid transparent;
+        border-bottom: 6px solid transparent;
+        border-right: 6px solid #fff;
+        left: -6px;
+        top: calc(50% - 6px);
+        filter: drop-shadow(-2px 0px 2px rgba(52, 73, 94, 0.1));
+    }
 </style>
