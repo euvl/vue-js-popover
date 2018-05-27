@@ -110,7 +110,7 @@ div[data-popover="foo"] {
 ### Grewer Add
 delay prop: Can add delays when hover is triggered, unit ms
 
-re-locate function :
+re-locate function:  
 usage:
 ```
 // template:
