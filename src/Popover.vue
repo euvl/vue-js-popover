@@ -139,9 +139,13 @@ export default {
       let trRect = target.getBoundingClientRect()
       let ddRect = dropdown.getBoundingClientRect()
 
+      // Scroll offset of the current document
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft
+
       // Position within the parent
-      let offsetLeft = trRect.left
-      let offsetTop = trRect.top
+      let offsetLeft = trRect.left + scrollLeft
+      let offsetTop = trRect.top + scrollTop
 
       // let shiftX = ddRect.width - trRect.width
       let shiftY = 0.5 * (ddRect.height + trRect.height)
