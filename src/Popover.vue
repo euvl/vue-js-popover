@@ -187,10 +187,16 @@ export default {
         y += direction[1] * pointerSize
       }
 
+      const scrollLeft = this.getScrollLeft()
       return {
-        left: centerX + x,
+        left: centerX + x + scrollLeft,
         top: centerY - y
       }
+    },
+    getScrollLeft() {
+      let obj = ((obj = document.documentElement) || (obj = document.body.parentNode)) && typeof obj.scrollLeft === 'number' ? obj : document.body
+      this.getScrollLeft = () => obj.scrollLeft
+      return obj.scrollLeft
     }
   }
 }
