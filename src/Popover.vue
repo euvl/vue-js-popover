@@ -179,6 +179,10 @@ export default {
 <style lang="scss">
 $pointer-size: 6px;
 
+popover {
+  display: none;
+}
+
 .vue-popover {
   display: block;
   position: absolute;
