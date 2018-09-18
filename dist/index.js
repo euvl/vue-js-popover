@@ -319,14 +319,16 @@ exports.default = {
           _this.visible = true;
 
           _this.$nextTick(function () {
-            var position = _this.getDrodownPosition(target, _this.$refs.dropdown, direction);
+            _this.$emit('show', event);
 
-            _this.position = {
-              left: position.left + 'px',
-              top: position.top + 'px'
-            };
+            _this.$nextTick(function () {
+              var position = _this.getDropdownPosition(target, _this.$refs.dropdown, direction);
 
-            _this.$emit('show', _extends({}, event, { position: position }));
+              _this.position = {
+                left: position.left + 'px',
+                top: position.top + 'px'
+              };
+            });
           });
         }
       });
@@ -337,12 +339,15 @@ exports.default = {
         this.$emit('hide', event);
       }
     },
-    getDrodownPosition: function getDrodownPosition(target, dropdown, direction) {
+    getDropdownPosition: function getDropdownPosition(target, dropdown, direction) {
       var trRect = target.getBoundingClientRect();
       var ddRect = dropdown.getBoundingClientRect();
 
-      var offsetLeft = target.offsetLeft,
-          offsetTop = target.offsetTop;
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft;
+
+      var offsetLeft = trRect.left + scrollLeft;
+      var offsetTop = trRect.top + scrollTop;
 
       var shiftY = 0.5 * (ddRect.height + trRect.height);
 
@@ -437,7 +442,7 @@ var prepareBinding = function prepareBinding(_ref) {
 
   var mods = Object.keys(modifiers);
   var name = (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && value.name ? value.name : arg;
-  var position = mods[0] || defaultPosition;
+  var position = mods[0] || value.position || defaultPosition;
 
   return { name: name, position: position, value: value };
 };
@@ -463,7 +468,7 @@ var addClickEventListener = function addClickEventListener(target, params) {
 };
 
 var addHoverEventListener = function addHoverEventListener(target, params) {
-  var mouseover = function mouseover(srcEvent) {
+  var mouseenter = function mouseenter(srcEvent) {
     _bus.events.$emit('show:hover', _extends({}, params, { target: target, srcEvent: srcEvent }));
   };
 
@@ -471,11 +476,11 @@ var addHoverEventListener = function addHoverEventListener(target, params) {
     _bus.events.$emit('hide:hover', _extends({}, params, { target: target, srcEvent: srcEvent }));
   };
 
-  target.addEventListener('mouseover', mouseover);
+  target.addEventListener('mouseenter', mouseenter);
   target.addEventListener('mouseleave', mouseleave);
 
   target.$popoverRemoveHoverHandlers = function () {
-    target.removeEventListener('mouseover', mouseover);
+    target.removeEventListener('mouseenter', mouseenter);
     target.removeEventListener('mouseleave', mouseleave);
   };
 };
