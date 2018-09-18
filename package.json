@@ -1,7 +1,7 @@
 {
   "name": "vue-js-popover",
   "description": "Vue.js 2+ popover component",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "author": "euvl <yev.vlasenko@gmail.com>",
   "private": false,
   "scripts": {
