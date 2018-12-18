@@ -1,5 +1,7 @@
-var path = require('path')
-var webpack = require('webpack')
+const path = require('path')
+const webpack = require('webpack')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin")
 
 module.exports = {
   entry: './src/index.js',
@@ -21,6 +23,10 @@ module.exports = {
             'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
           }
         }
+      },
+      {
+        test: /\.scss$/,
+        loader: 'vue-style-loader!css-loader!sass-loader',
       },
       {
         test: /\.js$/,
@@ -46,6 +52,7 @@ module.exports = {
   },
   devtool: '#source-map',
   plugins: [
+    new VueLoaderPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"'
