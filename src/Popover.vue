@@ -113,11 +113,11 @@ export default {
 
           this.$nextTick(() => {
             this.$emit('show', event)
-            
+
             this.$nextTick(()=>{
               let position = this
                 .getDropdownPosition(target, this.$refs.dropdown, direction)
-                
+
               this.position = {
                 left: `${position.left}px`,
                 top: `${position.top}px`
@@ -151,8 +151,8 @@ export default {
       let shiftY = 0.5 * (ddRect.height + trRect.height)
 
       // Center of the target element
-      let centerX = offsetLeft - 0.5 * (ddRect.width - trRect.width) 
-      let centerY = offsetTop + trRect.height - shiftY 
+      let centerX = offsetLeft - 0.5 * (ddRect.width - trRect.width)
+      let centerY = offsetTop + trRect.height - shiftY
 
       // let anchorX = direction[0] * this.anchor
       // let anchorY = direction[0] * this.anchor
