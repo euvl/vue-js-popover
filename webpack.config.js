@@ -43,6 +43,20 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js'
     }
   },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        sourceMap: true,
+        parallel: 4,
+        uglifyOptions: {
+          warnings: false,
+          compress: {
+            warnings: false
+          },
+        },
+      })
+    ]
+  },
   devServer: {
     historyApiFallback: true,
     noInfo: true
