@@ -2,6 +2,7 @@
 import { events } from './bus'
 
 const pointerSize = 6
+
 const directions = {
   left:   [-1, 0],
   right:  [1, 0],
@@ -25,9 +26,7 @@ export default {
           'data-popover': this.name
         },
         on: {
-          click (event) {
-            event.stopPropagation()
-          }
+          click: event => event.stopPropagation()
         },
         ref: 'dropdown'
       },
@@ -114,7 +113,7 @@ export default {
           this.$nextTick(() => {
             this.$emit('show', event)
 
-            this.$nextTick(()=>{
+            this.$nextTick(() => {
               let position = this
                 .getDropdownPosition(target, this.$refs.dropdown, direction)
 
@@ -196,7 +195,7 @@ $pointer-size: 6px;
     position: absolute;
     width: 0;
     height: 0;
-    content: '';
+    content: "";
   }
 
   &.dropdown-position-bottom:before {
