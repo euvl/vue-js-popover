@@ -60,18 +60,23 @@ Tooltip component is simple af - 33 lines of code (mostly declarations). It demo
 ### Props
 ```javascript
 props: {
-  /* Tooltip name.                           */
-  name:    { type: String,  required: true   },
+  /* Tooltip name. */
+  name: { type: String, required: true },
 
-  width:   { type: Number,  default: 180     },
+  width: { type: Number,  default: 180 },
 
-  /* If set - will show a tiny tip.          */
-  pointer: { type: Boolean, default: true    },
+  /* If set - will show a tiny tip. */
+  pointer: { type: Boolean, default: true },
+
+  /* If set - the popover
+     will be displayed delayed.
+     Unit is millisecond */
+  delay: { type: Number, default: 0 },
 
   /* Name of the event which triggeres
      showing/hiding of the popover.
      Possible values are: 'click', 'hover'.  */
-  event:   { type: String,  default: 'click' }
+  event: { type: String,  default: 'click' }
 }
 ```
 ### Positioning
@@ -107,10 +112,10 @@ div[data-popover="foo"] {
 }
 ```
 
- ### Grewer Add
-delay prop: Can add delays when hover is triggered, unit ms
+### Other
 
- re-locate function:
+#### re-locate function:
+
 usage:
 ```
 // template:
@@ -121,5 +126,4 @@ usage:
 let Choose = this.$refs.Choose
 Choose.cleanLayout()
 ```
-When the popover position is top, data is added, and this function is needed to modify it,
-Or when the page is on resize
+When the popover position is top, data is added, and this function is needed to modify it or when the page is on resize.
