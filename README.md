@@ -28,13 +28,13 @@ Use:
 </popover>
 ```
 
-Or: 
+Or:
 ```vue
 <button v-popover="{ name: 'foo' }">Toggle popover</button>
 
 ```
 
-### Tooltip 
+### Tooltip
 
 Plugin contains a simple wrapper for `Tooltip`. To use it you will have to:
 
@@ -62,15 +62,15 @@ Tooltip component is simple af - 33 lines of code (mostly declarations). It demo
 props: {
   /* Tooltip name.                           */
   name:    { type: String,  required: true   },
-  
+
   width:   { type: Number,  default: 180     },
-  
+
   /* If set - will show a tiny tip.          */
   pointer: { type: Boolean, default: true    },
-  
-  /* Name of the event which triggeres 
+
+  /* Name of the event which triggeres
      showing/hiding of the popover.
-     Possible values are: 'click', 'hover'.  */  
+     Possible values are: 'click', 'hover'.  */
   event:   { type: String,  default: 'click' }
 }
 ```
@@ -81,14 +81,14 @@ You can use `.left`, `.right`, `.top`, `.bottom` modifiers to set the position o
 Example:
 
 ```vue
-<button v-popover:info.right>Edit (show popover right)</button> 
+<button v-popover:info.right>Edit (show popover right)</button>
 
 <button v-popover.left="{ name: 'info' }">Edit</button>
 ```
 
 ### Styling
 
-Popover components have `data-popover="name"` argument that allows to apply styles to it. 
+Popover components have `data-popover="name"` argument that allows to apply styles to it.
 
 Example:
 
@@ -110,7 +110,7 @@ div[data-popover="foo"] {
  ### Grewer Add
 delay prop: Can add delays when hover is triggered, unit ms
 
- re-locate function:  
+ re-locate function:
 usage:
 ```
 // template:
