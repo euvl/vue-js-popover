@@ -106,3 +106,20 @@ div[data-popover="foo"] {
   margin: 5px;
 }
 ```
+
+ ### Grewer Add
+delay prop: Can add delays when hover is triggered, unit ms
+
+ re-locate function:  
+usage:
+```
+// template:
+<Popover name="Choose" ref="Choose" :width="600" event="click" @show="selectMatchesTablesShow">
+    // sth element
+</Popover>
+ // methods:
+let Choose = this.$refs.Choose
+Choose.cleanLayout()
+```
+When the popover position is top, data is added, and this function is needed to modify it,
+Or when the page is on resize

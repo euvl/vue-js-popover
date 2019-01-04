@@ -54,6 +54,10 @@ export default {
       type: Number,
       default: 0.5,
       validator: (v) => v >= 0 && v <= 1
+    },
+    delay: {
+      type: Number,
+      default: 0
     }
   },
   data () {
@@ -63,7 +67,9 @@ export default {
       position: {
         left: 0,
         top: 0
-      }
+      },
+      delayFunc: null,
+      theEvent: null
     }
   },
   mounted () {
@@ -102,32 +108,50 @@ export default {
       }
 
       this.$nextTick(() => {
+        this.theEvent = event
         let { target, name, position } = event
 
         if (name === this.name) {
-          let direction = directions[position]
+          this.delayFunc = setTimeout(() => {
+            let direction = directions[position]
 
-          this.positionClass = `dropdown-position-${position}`
-          this.visible = true
-
-          this.$nextTick(() => {
-            this.$emit('show', event)
+            this.positionClass = `dropdown-position-${position}`
+            this.visible = true
 
             this.$nextTick(() => {
-              let position = this
-                .getDropdownPosition(target, this.$refs.dropdown, direction)
+              this.$emit('show', event)
 
-              this.position = {
-                left: `${position.left}px`,
-                top: `${position.top}px`
-              }
+              this.$nextTick(() => {
+                let position = this
+                  .getDropdownPosition(target, this.$refs.dropdown, direction)
+
+                this.position = {
+                  left: `${position.left}px`,
+                  top: `${position.top}px`
+                }
+              })
             })
-          })
+          }, this.delay)
         }
       })
     },
-
+    cleanLayout () {
+      let {target, position} = this.theEvent
+      let direction = directions[position]
+      this.$nextTick(() => {
+        let position = this
+          .getDropdownPosition(target, this.$refs.dropdown, direction)
+         this.position = {
+          left: `${position.left}px`,
+          top: `${position.top}px`
+        }
+      })
+    },
     hideEventListener (event) {
+      if (this.delayFunc) {
+        clearTimeout(this.delayFunc)
+        this.delayFunc = null
+      }
       if (this.visible) {
         this.visible = false
         this.$emit('hide', event)
@@ -166,10 +190,17 @@ export default {
         y += direction[1] * pointerSize
       }
 
+      const scrollLeft = this.getScrollLeft()
+
       return {
-        left: centerX + x,
+        left: centerX + x + scrollLeft,
         top: centerY - y
       }
+    },
+    getScrollLeft() {
+      let obj = ((obj = document.documentElement) || (obj = document.body.parentNode)) && typeof obj.scrollLeft === 'number' ? obj : document.body
+      this.getScrollLeft = () => obj.scrollLeft
+      return obj.scrollLeft
     }
   }
 }
