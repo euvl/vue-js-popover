@@ -3,9 +3,10 @@
   "description": "Vue.js 2+ popover component",
   "version": "1.1.7",
   "author": "euvl <yev.vlasenko@gmail.com>",
+  "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "build": "cross-env NODE_ENV=production webpack --mode production --progress --hide-modules"
   },
   "main": "dist/index.js",
   "repository": {
@@ -14,9 +15,6 @@
   },
   "bugs": {
     "url": "https://github.com/euvl/vue-js-popover/issues"
-  },
-  "peerDependencies": {
-    "vue": "^2.0.0"
   },
   "keywords": [
     "vue",
@@ -27,19 +25,22 @@
     "button"
   ],
   "devDependencies": {
-    "babel-core": "^6.0.0",
-    "babel-loader": "^6.0.0",
-    "babel-preset-latest": "^6.0.0",
-    "babel-preset-stage-2": "^6.24.1",
-    "cross-env": "^3.0.0",
-    "css-loader": "^0.25.0",
-    "file-loader": "^0.9.0",
-    "node-sass": "^4.5.0",
-    "sass-loader": "^5.0.1",
-    "vue": "^2.0.0",
-    "vue-loader": "^11.1.4",
-    "vue-template-compiler": "^2.0.0",
-    "webpack": "^2.2.0",
-    "webpack-dev-server": "^2.2.0"
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "babel-loader": "^8.0.4",
+    "cross-env": "^5.2.0",
+    "css-loader": "^2.1.0",
+    "file-loader": "^3.0.1",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
+    "uglifyjs-webpack-plugin": "^2.1.1",
+    "vue": "^2.5.21",
+    "vue-loader": "^15.4.2",
+    "vue-template-compiler": "^2.5.21",
+    "webpack": "^4.28.3",
+    "webpack-cli": "^3.2.0"
+  },
+  "peerDependencies": {
+    "vue": "^2.5.21"
   }
 }
