@@ -112,6 +112,7 @@ export default {
         let { target, name, position } = event
 
         if (name === this.name) {
+          console.log(this.delay)
           this.delayFunc = setTimeout(() => {
             let direction = directions[position]
 
@@ -190,10 +191,10 @@ export default {
         y += direction[1] * pointerSize
       }
 
-      const scrollLeft = this.getScrollLeft()
+      const scrollLeft2 = this.getScrollLeft()
 
       return {
-        left: centerX + x + scrollLeft,
+        left: centerX + x + scrollLeft2,
         top: centerY - y
       }
     },

@@ -23,6 +23,10 @@
         <button v-popover="{ name: 'aaa' }">TEST #1</button>
       </div>
 
+      <div>
+        <button v-popover="{ name: 'eee' }" style="width:150px">TEST DELAY</button>
+      </div>
+
       <transition name="show-from-left">
         <popover name="aaa" :width="120">
           <a href="http://yev.io">🎉 Hi 🎉</a>
@@ -42,7 +46,13 @@
 
       <transition name="show-from-right">
         <popover name="ddd" :width="120">
-          Whats up? 🐸
+          What 's up? 🐸
+        </popover>
+      </transition>
+
+      <transition name="show-from-right">
+        <popover name="eee" :width="120" delay=2000>
+          Sorry, I'm late!
         </popover>
       </transition>
     </div>
