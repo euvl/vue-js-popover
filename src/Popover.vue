@@ -48,6 +48,10 @@ export default {
       type: String,
       required: true
     },
+    delay: {
+      type: Number,
+      default: 0
+    },
     transition: {
       type: String
     },
@@ -123,13 +127,13 @@ export default {
         return
       }
 
-      this.$nextTick(() => {
-        let { name, position } = event
+      let { name, position } = event
 
-        if (name !== this.name) {
-          return
-        }
+      if (name !== this.name) {
+        return
+      }
 
+      this.timeout = setTimeout(() => {
         this.positionClass = `dropdown-position-${position}`
         this.visible = true
 
@@ -145,10 +149,14 @@ export default {
             }
           })
         })
-      })
+      }, Math.max(this.delay, 0))
     },
 
     hideEventListener(event) {
+      if (this.timeout) {
+        clearTimeout(this.timeout)
+      }
+
       if (this.visible) {
         this.visible = false
         this.$emit('hide', event)

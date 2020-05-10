@@ -52,11 +52,23 @@
     <button v-popover:ddd>Button</button>
 
     <template slot="footer">
-      <popover name="eee" transition="show-from-right">
+      <popover name="eee" transition="show-from-right" :delay="1000">
         Popover "E"
       </popover>
 
-      <button v-popover:eee.top>Fixed footer</button>
+      <popover
+        name="fff"
+        event="hover"
+        transition="show-from-right"
+        :delay="1000"
+      >
+        Popover "F"
+      </popover>
+
+      <button v-popover:eee.top>Fixed footer (click) + delay</button>
+      <button v-popover:fff.top>
+        Fixed footer (hover) + delay
+      </button>
     </template>
   </Wrapper>
 </template>

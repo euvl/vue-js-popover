@@ -71,6 +71,7 @@ Assign message to any element:
 | transition | String                 | -        | ...                                                    |
 | pointer    | Boolean                | -        | If set - will show a tiny tip                          |
 | event      | `"click"` \| `"hover"` | -        | Type of event that will trigger showing of the popover |
+| delay      | Number                 | -        | Delay in milliseconds                                  |
 
 ### Positioning
 
