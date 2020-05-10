@@ -24,7 +24,7 @@ Use:
 <button v-popover:foo>Toggle popover</button>
 
 <popover name="foo">
-  Hello 🎉
+  Hello
 </popover>
 ```
 
@@ -85,7 +85,7 @@ Popover components have `data-popover="name"` argument that allows to apply styl
 
 Example:
 
-```
+```vue
 <popover name="foo" :pointer="false">Bar</popover>
 ```
 
