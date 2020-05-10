@@ -51,11 +51,11 @@ Include `tooltip` component anywhere in the application:
 ```
 
 Assign message to any element:
+
 ```vue
 <button v-popover:tooltip="'This is a string value'">My butt0n</button>
 ```
 
-Tooltip component is simple af - 33 lines of code (mostly declarations). It demonstrates how easily you can create new things using the provided tool.
 
 ### Props
 
@@ -90,7 +90,7 @@ Example:
 ```
 
 ```css
-div[data-popover="foo"] {
+[data-popover="foo"] {
   background: #444;
   color: #f9f9f9;
 
