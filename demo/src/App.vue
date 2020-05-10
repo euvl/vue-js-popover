@@ -1,36 +1,26 @@
 <template>
   <Wrapper>
     <template slot="header">
-      <button v-popover:aaa>Test #1</button>
+      <button v-popover:ccc>Fixed header</button>
     </template>
     <template slot="footer">
-      <button v-popover:bbb.top>Test #2</button>
+      <button v-popover:bbb.top>Fixed footer</button>
     </template>
     <div>
-      <button v-popover:aaa.left>Left</button>
       <button v-popover:bbb.top>Top</button>
       <button v-popover:ccc.bottom>Bottom</button>
+      <button v-popover:aaa.left>Left</button>
       <button v-popover:ddd.right>Right</button>
 
-      <div>
-        <button
-          v-popover:tooltip="
-            'This is just an example of a tooltip wrapper and you can put your i18n value here.'
-          "
-        >
-          Tooltip
-        </button>
-      </div>
+      <button
+        v-popover:tooltip="
+          'This is just an example of a tooltip wrapper and you can put your i18n value here.'
+        "
+      >
+        Tooltip
+      </button>
 
-      <div>
-        <button v-popover="{ name: 'aaa' }">TEST #1</button>
-      </div>
-
-      <div style="position: relative">
-        <button v-popover="{ name: 'aaa' }">
-          Test #2
-        </button>
-      </div>
+      <button v-popover="{ name: 'aaa' }">TEST #1</button>
 
       <!-------- POPOVERS --------->
 
@@ -42,7 +32,7 @@
         Popover "B"
       </popover>
 
-      <popover name="ccc" @show="showFour">
+      <popover name="ccc" transition="show-from-bottom" @show="showFour">
         <div>Popover "C"</div>
         <div>
           Opened at <i>{{ time }}</i>
@@ -60,8 +50,7 @@
 
     <div style="height: 1000px" />
 
-    <div>Test #3</div>
-    <button v-popover:ddd>Right</button>
+    <button v-popover:ddd>Button</button>
   </Wrapper>
 </template>
 
@@ -136,7 +125,20 @@ button {
   font-weight: 800;
 }
 
-// Show-from-left transition
+// Show from bottom transition
+
+.show-from-bottom-enter-active,
+.show-from-bottom-leave-active {
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.show-from-bottom-enter,
+.show-from-bottom-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+// Show from left transition
 
 .show-from-left-enter-active,
 .show-from-left-leave-active {
@@ -149,7 +151,7 @@ button {
   transform: translate(-20px);
 }
 
-// Show-from-right transition
+// Show from right transition
 
 .show-from-right-enter-active,
 .show-from-right-leave-active {
