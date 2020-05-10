@@ -58,22 +58,15 @@ Assign message to any element:
 Tooltip component is simple af - 33 lines of code (mostly declarations). It demonstrates how easily you can create new things using the provided tool.
 
 ### Props
-```javascript
-props: {
-  /* Tooltip name.                           */
-  name:    { type: String,  required: true   },
-  
-  width:   { type: Number,  default: 180     },
-  
-  /* If set - will show a tiny tip.          */
-  pointer: { type: Boolean, default: true    },
-  
-  /* Name of the event which triggeres 
-     showing/hiding of the popover.
-     Possible values are: 'click', 'hover'.  */  
-  event:   { type: String,  default: 'click' }
-}
-```
+
+| Name       | Type               | Required | Description                                            |
+|------------|--------------------|----------|--------------------------------------------------------|
+| name       | String             | +        | ...                                                    |
+| width      | Number             | -        | ...                                                    |
+| transition | String             | -        | ...                                                    |
+| pointer    | Boolean            | -        | If set - will show a tiny tip                          |
+| event      | "click" \| "hover" | -        | Type of event that will trigger showing of the popover |
+
 ### Positioning
 
 You can use `.left`, `.right`, `.top`, `.bottom` modifiers to set the position of the popover.
