@@ -1,7 +1,7 @@
 <template>
   <Wrapper>
     <template slot="header">
-      <button v-popover:ccc>Fixed header</button>
+      <button v-popover:ccc>Fixed position</button>
     </template>
     <template slot="footer">
       <button v-popover:bbb.top>Fixed footer</button>
@@ -20,8 +20,9 @@
         Tooltip
       </button>
 
-      <button v-popover="{ name: 'aaa' }">TEST #1</button>
-
+      <div style="position: absolute; right: 0; top: 160px">
+        <button v-popover="{ name: 'aaa' }">Absolute position</button>
+      </div>
       <!-------- POPOVERS --------->
 
       <popover name="aaa" transition="show-from-left" :width="120">

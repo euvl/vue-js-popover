@@ -15,7 +15,7 @@
 
 <script>
 import { subscription } from './subscription'
-import { getFixedPositionParents } from './utils'
+import { getFixedPositionParents, getLayer } from './utils'
 
 const pointerSize = 6
 
@@ -124,7 +124,7 @@ export default {
       }
 
       this.$nextTick(() => {
-        let { target, name, position } = event
+        let { name, position } = event
 
         if (name !== this.name) {
           return
@@ -140,7 +140,7 @@ export default {
 
           this.$nextTick(() => {
             let position = this.getDropdownPosition(
-              target,
+              event,
               this.$refs.dropdown,
               direction
             )
@@ -161,9 +161,10 @@ export default {
       }
     },
 
-    getDropdownPosition(target, dropdown, direction) {
-      let trRect = target.getBoundingClientRect()
-      let ddRect = dropdown.getBoundingClientRect()
+    getDropdownPosition(event, dropdown, direction) {
+      const { target } = event
+      const trRect = target.getBoundingClientRect()
+      const ddRect = dropdown.getBoundingClientRect()
 
       this.fixedParents = getFixedPositionParents(target)
 

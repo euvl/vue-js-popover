@@ -35,3 +35,21 @@ export const getMaxZIndex = (elements = []) => {
     return Math.max(z, nz)
   }, 1)
 }
+
+export const getLayer = event => {
+  let el = event.target
+  let x = 0
+  let y = 0
+
+  while (el && !Number.isNaN(el.offsetLeft) && !Number.isNaN(el.offsetTop)) {
+    x += el.offsetLeft - el.scrollLeft
+    y += el.offsetTop - el.scrollTop
+
+    el = el.offsetParent
+  }
+
+  x = event.clientX - x
+  y = event.clientY - y
+
+  return { x, y }
+}
