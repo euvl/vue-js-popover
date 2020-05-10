@@ -9,17 +9,22 @@
 [Live demo here](http://vue-js-dropdown.yev.io/)
 
 Install:
+
 ```bash
 npm install vue-js-popover --save
 ```
+
 Import:
+
 ```javascript
-import Vue      from 'vue'
-import Popover  from 'vue-js-popover'
+import Vue from 'vue'
+import Popover from 'vue-js-popover'
 
 Vue.use(Popover)
 ```
+
 Use:
+
 ```vue
 <button v-popover:foo>Toggle popover</button>
 
@@ -28,17 +33,18 @@ Use:
 </popover>
 ```
 
-Or: 
+Or:
+
 ```vue
 <button v-popover="{ name: 'foo' }">Toggle popover</button>
-
 ```
 
-### Tooltip 
+### Tooltip
 
 Plugin contains a simple wrapper for `Tooltip`. To use it you will have to:
 
 Set `tooltip` flag in your `main.js`:
+
 ```javascript
 import VPopover from 'vue-js-popover'
 Vue.use(VPopover, { tooltip: true })
@@ -47,7 +53,7 @@ Vue.use(VPopover, { tooltip: true })
 Include `tooltip` component anywhere in the application:
 
 ```vue
-<tooltip/>
+<tooltip />
 ```
 
 Assign message to any element:
@@ -56,16 +62,15 @@ Assign message to any element:
 <button v-popover:tooltip="'This is a string value'">My butt0n</button>
 ```
 
-
 ### Props
 
-| Name       | Type               | Required | Description                                            |
-|------------|--------------------|----------|--------------------------------------------------------|
-| name       | String             | +        | ...                                                    |
-| width      | Number             | -        | ...                                                    |
-| transition | String             | -        | ...                                                    |
-| pointer    | Boolean            | -        | If set - will show a tiny tip                          |
-| event      | "click" \| "hover" | -        | Type of event that will trigger showing of the popover |
+| Name       | Type                   | Required | Description                                            |
+| ---------- | ---------------------- | -------- | ------------------------------------------------------ |
+| name       | String                 | +        | ...                                                    |
+| width      | Number                 | -        | ...                                                    |
+| transition | String                 | -        | ...                                                    |
+| pointer    | Boolean                | -        | If set - will show a tiny tip                          |
+| event      | `"click"` \| `"hover"` | -        | Type of event that will trigger showing of the popover |
 
 ### Positioning
 
@@ -74,14 +79,14 @@ You can use `.left`, `.right`, `.top`, `.bottom` modifiers to set the position o
 Example:
 
 ```vue
-<button v-popover:info.right>Edit (show popover right)</button> 
+<button v-popover:info.right>Edit (show popover right)</button>
 
 <button v-popover.left="{ name: 'info' }">Edit</button>
 ```
 
 ### Styling
 
-Popover components have `data-popover="name"` argument that allows to apply styles to it. 
+Popover components have `data-popover="name"` argument that allows to apply styles to it.
 
 Example:
 
@@ -90,7 +95,7 @@ Example:
 ```
 
 ```css
-[data-popover="foo"] {
+[data-popover='foo'] {
   background: #444;
   color: #f9f9f9;
 
