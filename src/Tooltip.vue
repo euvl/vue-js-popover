@@ -1,17 +1,19 @@
 <template>
-  <popover name="tooltip"
-           :pointer="pointer"
-           :width="width"
-           :event="event"
-           @show="value = $event.value">
-    {{value}}
+  <popover
+    name="tooltip"
+    :pointer="pointer"
+    :width="width"
+    :event="event"
+    @show="value = $event.value"
+  >
+    {{ value }}
   </popover>
 </template>
 <script>
 export default {
   name: 'Tooltip',
   props: {
-    event : {
+    event: {
       type: String,
       default: 'hover'
     },
@@ -24,7 +26,7 @@ export default {
       default: 160
     }
   },
-  data () {
+  data() {
     return {
       value: ''
     }

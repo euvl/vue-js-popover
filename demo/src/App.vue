@@ -1,12 +1,11 @@
 <template>
-  <div id="app">
-    <div style="text-align: left;">
-      <h2>Vue.js Popover
-        <a href="https://github.com/euvl/vue-js-popover/blob/master/README.md" target="readme">Readme</a>
-        <a href="https://github.com/euvl/vue-js-popover/issues" target="issues">Issues</a>
-      </h2>
-    </div>
-
+  <Wrapper>
+    <template slot="header">
+      <button v-popover:aaa>Test #1</button>
+    </template>
+    <template slot="footer">
+      <button v-popover:bbb.top>Test #2</button>
+    </template>
     <div>
       <button v-popover:aaa.left>Left</button>
       <button v-popover:bbb.top>Top</button>
@@ -14,7 +13,11 @@
       <button v-popover:ddd.right>Right</button>
 
       <div>
-        <button v-popover:tooltip="'This is just an example of a tooltip wrapper and you can put your i18n value here.'">
+        <button
+          v-popover:tooltip="
+            'This is just an example of a tooltip wrapper and you can put your i18n value here.'
+          "
+        >
           Tooltip
         </button>
       </div>
@@ -23,67 +26,61 @@
         <button v-popover="{ name: 'aaa' }">TEST #1</button>
       </div>
 
-      <transition name="show-from-left">
-        <popover name="aaa" :width="120">
-          <a href="http://yev.io">🎉 Hi 🎉</a>
-        </popover>
-      </transition>
+      <div style="position: relative">
+        <button v-popover="{ name: 'aaa' }">
+          Test #2
+        </button>
+      </div>
 
-      <transition name="pop-out">
-        <popover name="bbb">
-          How are you? 🚀
-        </popover>
-      </transition>
+      <!-------- POPOVERS --------->
 
-      <popover name="ccc" @show="showFour">
-        <div>Hm...😠</div>
-        <div>Opened at <i>{{openedTime}}</i></div>
+      <popover name="aaa" transition="show-from-left" :width="120">
+        <a href="http://yev.io">Popover "A"</a>
       </popover>
 
-      <transition name="show-from-right">
-        <popover name="ddd" :width="120">
-          Whats up? 🐸
-        </popover>
-      </transition>
+      <popover name="bbb">
+        Popover "B"
+      </popover>
+
+      <popover name="ccc" @show="showFour">
+        <div>Popover "C"</div>
+        <div>
+          Opened at <i>{{ time }}</i>
+        </div>
+      </popover>
+
+      <popover name="ddd" :width="120" transition="show-from-right">
+        Popover "D"
+      </popover>
     </div>
 
-    <pre class="xml" v-text="example.html"/>
-    <tooltip/>
-  </div>
+    <!--------- TOOLTIP --------->
+
+    <tooltip />
+
+    <div style="height: 1000px" />
+
+    <div>Test #3</div>
+    <button v-popover:ddd>Right</button>
+  </Wrapper>
 </template>
 
 <script>
-const html = `npm install vue-js-popover --save
-
-...
-
-import Vue      from 'vue'
-import Popover from 'vue-js-popover'
-
-Vue.use(Popover)
-
-...
-
-<button v-popover:myname>Toggle popover</button>
-
-<popover name="myname">
-  Hello!
-</popover>
-`
+import Wrapper from './Wrapper.vue'
 
 export default {
   name: 'app',
-  data () {
+  components: {
+    Wrapper
+  },
+  data() {
     return {
-      openedTime: '',
-      example: {
-        html
-      }
+      time: ''
     }
   },
   methods: {
-    showFour () {
-      this.openedTime = new Date().toLocaleTimeString()
+    showFour() {
+      this.time = new Date().toLocaleTimeString()
     }
   }
 }
@@ -92,20 +89,6 @@ export default {
 <style lang="scss">
 $buttonWidth: 90px;
 $buttonHeight: 40px;
-
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  padding-top: 100px;
-
-  overflow: none;
-
-  max-width: 500px;
-  margin: 0 auto;
-}
 
 .xml {
   max-width: 500px;
@@ -132,16 +115,14 @@ a {
 
 button {
   position: relative;
-  width: $buttonWidth;
-  height: $buttonHeight;
-  line-height: $buttonHeight;
+
   text-align: center;
 
   cursor: pointer;
 
   outline: none;
 
-  padding: 0;
+  padding: 8px 16px;
   border: 0;
   margin: 4px;
   border-radius: 3px;
@@ -157,39 +138,45 @@ button {
 
 // Show-from-left transition
 
-.show-from-left-enter-active, .show-from-left-leave-active {
-  transition: transform 1s, opacity 0.7s;
+.show-from-left-enter-active,
+.show-from-left-leave-active {
+  transition: transform 0.3s, opacity 0.3s;
 }
 
-.show-from-left-enter, .show-from-left-leave-to {
+.show-from-left-enter,
+.show-from-left-leave-to {
   opacity: 0;
   transform: translate(-20px);
 }
 
 // Show-from-right transition
 
-.show-from-right-enter-active, .show-from-right-leave-active {
-  transition: transform 1s, opacity 0.7s;
+.show-from-right-enter-active,
+.show-from-right-leave-active {
+  transition: transform 0.3s, opacity 0.3s;
 }
 
-.show-from-right-enter, .show-from-right-leave-to {
+.show-from-right-enter,
+.show-from-right-leave-to {
   opacity: 0;
   transform: translate(20px);
 }
 
 // Pop-out transition
 
-.pop-out-enter-active, .pop-out-leave-active {
-  transition: transform 1.5s, opacity 2s;
-//  transform-origin: center;
+.pop-out-enter-active,
+.pop-out-leave-active {
+  transition: transform 0.3s, opacity 0.3s;
+  //  transform-origin: center;
 }
 
-.pop-out-enter, .pop-out-leave-to {
+.pop-out-enter,
+.pop-out-leave-to {
   opacity: 0;
-  transform: rotate(720deg) translate(0, 120px);
+  transform: scale(0.3);
 }
 
-div[data-popover="tooltip"] {
+div[data-popover='tooltip'] {
   background: #444;
   color: #f9f9f9;
 
@@ -197,5 +184,4 @@ div[data-popover="tooltip"] {
   line-height: 1.5;
   margin: 5px;
 }
-
 </style>

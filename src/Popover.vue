@@ -1,42 +1,55 @@
+<template>
+  <transition :name="transition">
+    <div
+      v-if="visible"
+      :class="className"
+      :style="style"
+      :data-popover="this.name"
+      @click.stop
+      ref="dropdown"
+    >
+      <slot />
+    </div>
+  </transition>
+</template>
+
 <script>
-import { events } from './bus'
+import { subscription } from './subscription'
+import { getFixedPositionParents } from './utils'
 
 const pointerSize = 6
 
+const anchors = {
+  leftTop: '',
+  leftCenter: '',
+  leftBottom: '',
+  topLeft: '',
+  topCenter: '',
+  topRight: '',
+  rightTop: '',
+  rightCenter: '',
+  rightBottom: '',
+  bottomLeft: '',
+  bottomCenter: '',
+  bottomRight: ''
+}
+
 const directions = {
-  left:   [-1, 0],
-  right:  [1, 0],
-  top:    [0, 1],
+  left: [-1, 0],
+  right: [1, 0],
+  top: [0, 1],
   bottom: [0, -1]
 }
 
 export default {
   name: 'Popover',
-  render: function (createElement) {
-    if (!this.visible) {
-      return
-    }
-
-    return createElement(
-      'div',
-      {
-        class: this.className,
-        style: this.style,
-        attrs: {
-          'data-popover': this.name
-        },
-        on: {
-          click: event => event.stopPropagation()
-        },
-        ref: 'dropdown'
-      },
-      this.$slots.default
-    )
-  },
   props: {
     name: {
       type: String,
       required: true
+    },
+    transition: {
+      type: String
     },
     width: {
       type: Number,
@@ -53,98 +66,135 @@ export default {
     anchor: {
       type: Number,
       default: 0.5,
-      validator: (v) => v >= 0 && v <= 1
+      validator: v => v >= 0 && v <= 1
     }
   },
-  data () {
+  data() {
     return {
       visible: false,
+      zIndex: 1,
       positionClass: '',
+      fixedParents: [],
       position: {
         left: 0,
         top: 0
       }
     }
   },
-  mounted () {
-    events.$on(this.showEventName, this.showEventListener)
-    events.$on(this.hideEventName, this.hideEventListener)
+  mounted() {
+    subscription.$on(this.showEventName, this.showEventListener)
+    subscription.$on(this.hideEventName, this.hideEventListener)
   },
-  beforeDestroy () {
-    events.$off(this.showEventName, this.showEventListener)
-    events.$off(this.hideEventName, this.hideEventListener)
+  beforeDestroy() {
+    subscription.$off(this.showEventName, this.showEventListener)
+    subscription.$off(this.hideEventName, this.hideEventListener)
   },
   computed: {
-    showEventName () {
+    showEventName() {
       return `show:${this.event}`
     },
-    hideEventName () {
+    hideEventName() {
       return `hide:${this.event}`
     },
-    className () {
-      return [
-        'vue-popover',
-        this.pointer && this.positionClass
-      ]
+    className() {
+      return ['vue-popover', this.pointer && this.positionClass]
     },
-    style () {
-      return {
-        width: `${this.width}px`,
+    style() {
+      const { width, zIndex, fixedParents } = this
+      const hasFixedParents = fixedParents.length > 0
+
+      const styles = {
+        width: `${width}px`,
+        zIndex,
         ...this.position
       }
+
+      if (hasFixedParents) {
+        styles.position = 'fixed'
+      }
+
+      return styles
     }
   },
   methods: {
-    showEventListener (event) {
+    showEventListener(event) {
       if (this.visible) {
-        events.$emit(this.hideEventName)
+        subscription.$emit(this.hideEventName)
         return
       }
 
       this.$nextTick(() => {
         let { target, name, position } = event
 
-        if (name === this.name) {
-          let direction = directions[position]
+        if (name !== this.name) {
+          return
+        }
 
-          this.positionClass = `dropdown-position-${position}`
-          this.visible = true
+        const direction = directions[position]
+
+        this.positionClass = `dropdown-position-${position}`
+        this.visible = true
+
+        this.$nextTick(() => {
+          this.$emit('show', event)
 
           this.$nextTick(() => {
-            this.$emit('show', event)
+            let position = this.getDropdownPosition(
+              target,
+              this.$refs.dropdown,
+              direction
+            )
 
-            this.$nextTick(() => {
-              let position = this
-                .getDropdownPosition(target, this.$refs.dropdown, direction)
-
-              this.position = {
-                left: `${position.left}px`,
-                top: `${position.top}px`
-              }
-            })
+            this.position = {
+              left: `${position.left}px`,
+              top: `${position.top}px`
+            }
           })
-        }
+        })
       })
     },
 
-    hideEventListener (event) {
+    hideEventListener(event) {
       if (this.visible) {
         this.visible = false
         this.$emit('hide', event)
       }
     },
 
-    getDropdownPosition (target, dropdown, direction) {
+    getDropdownPosition(target, dropdown, direction) {
       let trRect = target.getBoundingClientRect()
       let ddRect = dropdown.getBoundingClientRect()
 
-      // Scroll offset of the current document
-      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft
+      this.fixedParents = getFixedPositionParents(target)
 
-      // Position within the parent
-      let offsetLeft = trRect.left + scrollLeft
-      let offsetTop = trRect.top + scrollTop
+      const zIndex =
+        [target, ...this.fixedParents].reduce((z, node) => {
+          let nz = parseInt(getComputedStyle(node)['z-index']) || 1
+
+          return Math.max(z, nz)
+        }, 1) + 1
+
+      this.zIndex = zIndex
+
+      let offsetLeft = trRect.left
+      let offsetTop = trRect.top
+
+      if (this.fixedParents.length === 0) {
+        // Scroll offset of the current document
+        const scrollTop =
+          window.pageYOffset ||
+          document.documentElement.scrollTop ||
+          document.body.scrollTop
+
+        const scrollLeft =
+          window.pageXOffset ||
+          document.documentElement.scrollLeft ||
+          document.body.scrollLeft
+
+        // Position within the parent
+        offsetLeft = trRect.left + scrollLeft
+        offsetTop = trRect.top + scrollTop
+      }
 
       // let shiftX = ddRect.width - trRect.width
       let shiftY = 0.5 * (ddRect.height + trRect.height)
@@ -167,8 +217,8 @@ export default {
       }
 
       return {
-        left: centerX + x,
-        top: centerY - y
+        left: Math.round(centerX + x),
+        top: Math.round(centerY - y)
       }
     }
   }
@@ -195,7 +245,7 @@ $pointer-size: 6px;
     position: absolute;
     width: 0;
     height: 0;
-    content: "";
+    content: '';
   }
 
   &.dropdown-position-bottom:before {
