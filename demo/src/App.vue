@@ -3,9 +3,7 @@
     <template slot="header">
       <button v-popover:ccc>Fixed position</button>
     </template>
-    <template slot="footer">
-      <button v-popover:bbb.top>Fixed footer</button>
-    </template>
+
     <div>
       <button v-popover:bbb.top>Top</button>
       <button v-popover:ccc.bottom>Bottom</button>
@@ -52,6 +50,14 @@
     <div style="height: 1000px" />
 
     <button v-popover:ddd>Button</button>
+
+    <template slot="footer">
+      <popover name="eee" transition="show-from-right">
+        Popover "E"
+      </popover>
+
+      <button v-popover:eee.top>Fixed footer</button>
+    </template>
   </Wrapper>
 </template>
 
