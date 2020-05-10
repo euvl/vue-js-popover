@@ -13,10 +13,6 @@ export default {
     Vue.directive('popover', directive())
 
     if (params.tooltip) {
-      if (params.debug) {
-        console.log('vue-js-popover | tooltip active')
-      }
-
       Vue.component('Tooltip', Tooltip)
     }
   }

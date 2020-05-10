@@ -15,7 +15,7 @@
 
 <script>
 import { subscription } from './subscription'
-import { getFixedPositionParents, getLayer } from './utils'
+import { getFixedPositionParents, getLayer, getMaxZIndex } from './utils'
 
 const pointerSize = 6
 
@@ -130,8 +130,6 @@ export default {
           return
         }
 
-        const direction = directions[position]
-
         this.positionClass = `dropdown-position-${position}`
         this.visible = true
 
@@ -139,11 +137,7 @@ export default {
           this.$emit('show', event)
 
           this.$nextTick(() => {
-            let position = this.getDropdownPosition(
-              event,
-              this.$refs.dropdown,
-              direction
-            )
+            let position = this.getDropdownPosition(event)
 
             this.position = {
               left: `${position.left}px`,
@@ -161,19 +155,20 @@ export default {
       }
     },
 
-    getDropdownPosition(event, dropdown, direction) {
-      const { target } = event
+    getDropdownPosition(event) {
+      const { target, position } = event
+
+      const direction = directions[position]
+      const dropdown = this.$refs.dropdown
+
       const trRect = target.getBoundingClientRect()
       const ddRect = dropdown.getBoundingClientRect()
 
       this.fixedParents = getFixedPositionParents(target)
 
-      const zIndex =
-        [target, ...this.fixedParents].reduce((z, node) => {
-          let nz = parseInt(getComputedStyle(node)['z-index']) || 1
-
-          return Math.max(z, nz)
-        }, 1) + 1
+      const zIndex = event.zIndex
+        ? event.zIndex
+        : getMaxZIndex([target, ...this.fixedParents]) + 1
 
       this.zIndex = zIndex
 
