@@ -105,3 +105,36 @@ Example:
   margin: 5px;
 }
 ```
+
+### Transition
+
+In your template add a single class to `transition` prop, like this:
+
+```vue
+<popover
+	name="my-tooltip"
+	transition="my-tooltip"
+	:event="'hover'"
+	:pointer="false"
+	>
+</popover>
+```
+
+Later, append that same class to [Vue transition classes](https://v2.vuejs.org/v2/guide/transitions.html#Transition-Classes) to apply the transition. So, for example, a `tooltip` element that fades in on `hover` with **0.2 second** `transition-duration` will look like this:
+
+```css
+// "enter" state (start state of an element)
+.my-tooltip-enter {
+	opacity: 0;
+}
+
+// "enter-to" state (end state of an element)
+.my-tooltip-enter-to {
+	opacity: 1;
+}
+
+// "enter-active" state (duration of the whole animation. add your transition here)
+.my-tooltip-enter-active {
+	transition: opacity 0.2s ease-out 0s;
+}
+```
